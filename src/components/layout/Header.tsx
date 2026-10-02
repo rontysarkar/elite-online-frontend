@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { Menu, Wifi } from "lucide-react";
 
@@ -13,7 +11,8 @@ import {
 } from "@/components/ui/sheet";
 
 import { ModeToggle } from "@/components/global/mode-toggle";
-import { useState } from "react";
+
+import { Logo } from "../global/logo";
 
 const navItems = [
   {
@@ -43,29 +42,10 @@ const navItems = [
 ];
 
 export function Header() {
-  const [openConnectionModal, setOpenConnectionModal] = useState(false);
-
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Logo */}
-        <Link href="#home" className="flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Wifi className="h-5 w-5" />
-          </div>
-
-          <div className="flex flex-col leading-none">
-            <span className="text-lg font-bold tracking-tight">
-              Elite Online
-            </span>
-
-            <span className="text-[10px] text-muted-foreground">
-              Internet Service Provider
-            </span>
-          </div>
-        </Link>
-
-        {/* Desktop Navigation */}
+        <Logo />
         <nav className="hidden items-center gap-6 lg:flex">
           {navItems.map((item) => (
             <Link
@@ -78,20 +58,22 @@ export function Header() {
           ))}
         </nav>
 
-        {/* Desktop Actions */}
         <div className="hidden items-center gap-2 lg:flex">
           <ModeToggle />
 
-          <Button nativeButton={false} render={<Link href="#contact" />}>
-            Customer Login
+          <Button nativeButton={false} render={<Link href="/login" />}>
+            User Login
           </Button>
 
-          <Button nativeButton={false} render={<Link href="#contact" />}>
+          <Button
+            nativeButton={false}
+            render={<Link href="/connection-request" />}
+          >
             Get Connection
           </Button>
         </div>
 
-        {/* Mobile Actions */}
+
         <div className="flex  items-center gap-1 lg:hidden">
           <ModeToggle />
 
@@ -136,14 +118,14 @@ export function Header() {
                   <Button
                     variant="outline"
                     nativeButton={false}
-                    render={<Link href="#contact" />}
+                    render={<Link href="/login" />}
                   >
                     Customer Login
                   </Button>
 
                   <Button
                     nativeButton={false}
-                    render={<Link href="#contact" />}
+                    render={<Link href="" />}
                   >
                     Get Connection
                   </Button>
