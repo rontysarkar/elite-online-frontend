@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { loginSchema } from "@/validation";
 import { useLogin } from "@/hooks";
 import { toast } from "../ui/toast";
+import { useRouter } from "next/navigation";
 
 function getErrorMessage(error: unknown): string {
   if (typeof error === "string") return error;
@@ -20,6 +21,7 @@ function getErrorMessage(error: unknown): string {
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = React.useState(false);
+  const router = useRouter();
 
   const {mutate:login,isPending:isSubmitting} = useLogin();
 
@@ -46,6 +48,7 @@ export function LoginForm() {
             description: "You have successfully logged in.",
             type: "success",
           });
+          router.push('/')
         },
         onError: () => {
           toast.add({

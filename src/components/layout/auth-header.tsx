@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Logo } from "./logo";
+import { Logo } from "../global/logo";
+
 
 type HeaderProps = {
   message?: string;

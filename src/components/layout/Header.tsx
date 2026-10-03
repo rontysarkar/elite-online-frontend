@@ -1,7 +1,8 @@
+"use client";
 import Link from "next/link";
-import { Menu, Wifi } from "lucide-react";
+import {  Menu, Wifi } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+
 import {
   Sheet,
   SheetContent,
@@ -9,10 +10,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-
 import { ModeToggle } from "@/components/global/mode-toggle";
-
 import { Logo } from "../global/logo";
+import HeaderAction from "./HeaderAction";
 
 const navItems = [
   {
@@ -60,19 +60,8 @@ export function Header() {
 
         <div className="hidden items-center gap-2 lg:flex">
           <ModeToggle />
-
-          <Button nativeButton={false} render={<Link href="/login" />}>
-            User Login
-          </Button>
-
-          <Button
-            nativeButton={false}
-            render={<Link href="/connection-request" />}
-          >
-            Get Connection
-          </Button>
+          <HeaderAction />
         </div>
-
 
         <div className="flex  items-center gap-1 lg:hidden">
           <ModeToggle />
@@ -115,20 +104,7 @@ export function Header() {
                 ))}
 
                 <div className="mt-6 flex flex-col gap-3">
-                  <Button
-                    variant="outline"
-                    nativeButton={false}
-                    render={<Link href="/login" />}
-                  >
-                    Customer Login
-                  </Button>
-
-                  <Button
-                    nativeButton={false}
-                    render={<Link href="" />}
-                  >
-                    Get Connection
-                  </Button>
+                  <HeaderAction />
                 </div>
               </div>
             </SheetContent>
