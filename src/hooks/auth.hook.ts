@@ -1,4 +1,13 @@
-import { getMe, sendConnectionRequest, userLogin, userLogout } from "@/api";
+import {
+  forgotPassword,
+  getMe,
+  resendEmailVerify,
+  resetPassword,
+  sendConnectionRequest,
+  userLogin,
+  userLogout,
+  verifyEmail,
+} from "@/api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 export function useLogin() {
@@ -7,13 +16,11 @@ export function useLogin() {
   });
 }
 
-
 export function useLogout() {
   return useMutation({
     mutationFn: userLogout,
   });
 }
-
 
 export function useGetMe() {
   return useQuery({
@@ -27,4 +34,28 @@ export function useSendConnectionRequest() {
   return useMutation({
     mutationFn: sendConnectionRequest,
   });
-} 
+}
+
+export function useVerifyEmail() {
+  return useMutation({
+    mutationFn: verifyEmail,
+  });
+}
+
+export function useResendEmailVerify() {
+  return useMutation({
+    mutationFn: resendEmailVerify,
+  });
+}
+
+export function useForgotPassword() {
+  return useMutation({
+    mutationFn: forgotPassword,
+  });
+}
+
+export function useResetPassword() {
+  return useMutation({
+    mutationFn: resetPassword,
+  });
+}   

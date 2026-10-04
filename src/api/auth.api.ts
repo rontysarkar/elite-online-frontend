@@ -19,5 +19,22 @@ export function sendConnectionRequest(payload:ConnectionRequestValues) {
     return apiClient("/connection-request",{method: "POST", body: payload})
 }
 
+export function verifyEmail(payload:{email:string,otp:number}) {
+    return apiClient("/connection-request/email-verify",{method: "POST", body: payload})
+}
+
+export function resendEmailVerify(payload:{email:string}) {
+    return apiClient("/connection-request/resend-email-verify",{method: "POST", body: payload})
+}
+
+
+export function forgotPassword(payload:{email:string}) {
+    return apiClient("/auth/forgot-password",{method: "POST", body: payload})
+}
+
+export function resetPassword(payload:{email:string,otp:string,new_password:string}) {
+    return apiClient("/auth/reset-password",{method: "POST", body: payload})
+}
+
 
 

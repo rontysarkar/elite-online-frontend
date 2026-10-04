@@ -31,3 +31,32 @@ export const ConnectionRequestSchema = z.object({
 });
 
 export type ConnectionRequestValues = z.infer<typeof ConnectionRequestSchema>;
+
+
+
+
+export const forgotPasswordSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .min(1, "Email is required")
+    .pipe(z.email("Enter a valid email address")),
+});
+
+export type ForgotPasswordValues = z.infer<typeof forgotPasswordSchema>;
+
+
+const OTP_LENGTH = 6;
+
+export const resetPasswordSchema = z.object({
+  otp: z
+    .string()
+    .min(1, "Verification code is required")
+    .regex(/^\d+$/, "Code must contain only numbers")
+    .length(OTP_LENGTH, `Enter the ${OTP_LENGTH}-digit code we sent to your email`),
+  password: z
+    .string()
+    .min(1, "New password is required")
+    .min(8, "Password must be at least 8 characters"),
+});
+export type ResetPasswordValues = z.infer<typeof resetPasswordSchema>;

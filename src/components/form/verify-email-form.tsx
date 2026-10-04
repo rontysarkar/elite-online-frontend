@@ -9,31 +9,24 @@ import { Button } from "../ui/button";
 
 import { Spinner } from "../ui/spinner";
 import OtpInput from "./otp-input";
+import { formatTime, getErrorMessage, maskEmail } from "@/helper";
+import { useResendEmailVerify, useVerifyEmail } from "@/hooks";
+import { toast } from "../ui/toast";
 
 const OTP_LENGTH = 6;
-const RESEND_SECONDS = 5 * 60;
+const RESEND_SECONDS = 5 ;
 
-// ---------- Validation schema (TODO: move to "@/validation" later) ----------
 export const verifyEmailSchema = z.object({
   otp: z
     .string()
     .regex(/^\d+$/, "Code must contain only numbers")
-    .length(OTP_LENGTH, `Enter the ${OTP_LENGTH}-digit code we sent to your email.`),
+    .length(
+      OTP_LENGTH,
+      `Enter the ${OTP_LENGTH}-digit code we sent to your email.`,
+    ),
 });
 
 export type VerifyEmailValues = z.infer<typeof verifyEmailSchema>;
-
-function maskEmail(email: string) {
-  const [name, domain] = email.split("@");
-  if (!name || !domain) return email;
-  return `${name.slice(0, 2)}***@${domain}`;
-}
-
-function formatTime(totalSeconds: number) {
-  const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
-  const seconds = String(totalSeconds % 60).padStart(2, "0");
-  return `${minutes}:${seconds}`;
-}
 
 export default function VerifyEmailForm() {
   const router = useRouter();
@@ -42,11 +35,10 @@ export default function VerifyEmailForm() {
   const [error, setError] = useState("");
   const [secondsLeft, setSecondsLeft] = useState(RESEND_SECONDS);
 
-  // TODO: Replace these with your mutation's isPending values.
-  const [isPending, setIsPending] = useState(false);
-  const [isPendingResend, setIsPendingResend] = useState(false);
+  const { mutate: verifyEmail, isPending } = useVerifyEmail();
+  const { mutate: resendEmailVerify, isPending: isPendingResend } =
+    useResendEmailVerify();
 
-  // Email comes from the URL: /verify-email?email=...
   const email = searchParams.get("email") || "";
 
   useEffect(() => {
@@ -66,19 +58,34 @@ export default function VerifyEmailForm() {
     if (error) setError("");
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     const result = verifyEmailSchema.safeParse({ otp });
     if (!result.success) {
       setError(result.error.issues[0].message);
       return;
     }
 
-    const payload = { email, otp: result.data.otp };
+    const payload = { email, otp: Number(result.data.otp) };
 
-    setIsPending(true);
-    // TODO: Add your verify email logic here and use `payload`.
-    console.log(payload);
-    setIsPending(false);
+    verifyEmail(payload, {
+      onSuccess: () => {
+        toast.add({
+          title: "Verification Successful",
+          description:
+            "You have successfully verified your email address.Our team will contact you shortly.",
+          type: "success",
+        });
+        router.push("/");
+      },
+      onError: (error) => {
+        console.log(error);
+        toast.add({
+          title: "Verification Failed",
+          description: "OTP code is invalid OR Expired. Please try again.",
+          type: "error",
+        });
+      },
+    });
   };
 
   const handleResend = async () => {
@@ -86,9 +93,23 @@ export default function VerifyEmailForm() {
     setError("");
     setSecondsLeft(RESEND_SECONDS);
     const payload = { email };
-    setIsPendingResend(true);
-    console.log(payload);
-    setIsPendingResend(false);
+    resendEmailVerify(payload, {
+      onSuccess: () => {
+        toast.add({
+          title: "New Verification Code Sent",
+          description: "We sent a new verification code to your email address.",
+          type: "success",
+        });
+      },
+      onError: (error) => {
+        toast.add({
+          title: "Verification Failed",
+          description: "Something went wrong. Please try again.",
+          type: "error",
+        });
+        router.push("/request-connection");
+      },
+    });
   };
 
   return (

@@ -11,3 +11,16 @@ export function getErrorMessage(error: unknown): string {
   }
   return "Invalid value";
 }
+
+
+export function maskEmail(email: string) {
+  const [name, domain] = email.split("@");
+  if (!name || !domain) return email;
+  return `${name.slice(0, 2)}***@${domain}`;
+}
+
+export function formatTime(totalSeconds: number) {
+  const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
+  const seconds = String(totalSeconds % 60).padStart(2, "0");
+  return `${minutes}:${seconds}`;
+}

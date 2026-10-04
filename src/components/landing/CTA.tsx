@@ -19,7 +19,7 @@ export function CTA() {
           size="lg"
           variant="secondary"
           className="mt-8"
-          render={<Link href="#packages" />}
+          render={<Link href="/request-connection">Request New Connection</Link>}
         >
           Request New Connection
         </Button>
