@@ -1,5 +1,5 @@
 
-export interface IResponse{
+export interface IApiResponse{
     success: boolean;
     statusCode: number;
     message: string;

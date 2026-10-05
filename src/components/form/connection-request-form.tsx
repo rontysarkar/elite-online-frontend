@@ -12,14 +12,14 @@ import {
 } from "@/components/ui/select";
 import { ConnectionRequestSchema, ConnectionRequestValues } from "@/validation";
 import { getErrorMessage, normalizePhone } from "@/helper";
-import { IArea, IInternetPackage, IResponse } from "@/types";
+import { IApiResponse, IArea, IInternetPackage } from "@/types";
 import { useGetAreas, useGetPackages, useSendConnectionRequest } from "@/hooks";
 import { toast } from "../ui/toast";
 import { useRouter } from "next/navigation";
 
 export function ConnectionRequestForm() {
-  const { data: areasResponse } = useGetAreas() as { data: IResponse };
-  const { data: packagesResponse } = useGetPackages() as { data: IResponse };
+  const { data: areasResponse } = useGetAreas() as { data: IApiResponse };
+  const { data: packagesResponse } = useGetPackages() as { data: IApiResponse };
   const { mutate: sendConnectionRequest, isPending: isSubmitting } =
     useSendConnectionRequest();
     const router = useRouter();

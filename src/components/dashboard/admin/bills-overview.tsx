@@ -9,27 +9,11 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { BillsReport } from "@/types/report.type";
 
-// ---------- Types (matches your API response `data`) ----------
-export interface BillsReport {
-  totalBills: number;
-  totalBillAmount: number;
-  paidBills: number;
-  paidAmount: number;
-  paidMethod: {
-    cashCollectedBills: number;
-    cashCollectedAmount: number;
-    bkashPaidBills: number;
-    bkashPaidAmount: number;
-  };
-  unpaidBills: number;
-  unpaidAmount: number;
-  overdueBills: number;
-  overdueAmount: number;
-  collectionRate: number;
-}
 
-// ---------- Helpers ----------
+
+
 const numberFormat = new Intl.NumberFormat("en-BD");
 
 function formatCurrency(amount: number) {
@@ -40,7 +24,6 @@ function percentOf(part: number, total: number) {
   return total > 0 ? Math.round((part / total) * 100) : 0;
 }
 
-// Uses only your existing theme colors: primary, secondary, destructive.
 type Tone = "primary" | "secondary" | "destructive";
 
 const TONE_STYLES: Record<Tone, { tile: string; bar: string; text: string }> = {
@@ -61,7 +44,6 @@ const TONE_STYLES: Record<Tone, { tile: string; bar: string; text: string }> = {
   },
 };
 
-// ---------- Small building blocks ----------
 function SectionCard({
   title,
   description,
@@ -134,7 +116,6 @@ function StatCard({
   );
 }
 
-// Circular progress ring made with plain SVG (no chart library needed).
 function CollectionRing({ rate }: { rate: number }) {
   const radius = 66;
   const circumference = 2 * Math.PI * radius;
@@ -177,7 +158,6 @@ function CollectionRing({ rate }: { rate: number }) {
   );
 }
 
-// ---------- Main component ----------
 export function BillsOverview({ data }: { data: BillsReport }) {
   const {
     totalBills,
@@ -192,7 +172,6 @@ export function BillsOverview({ data }: { data: BillsReport }) {
     collectionRate,
   } = data;
 
-  // The three statuses add up to the total (paid + unpaid + overdue).
   const statusRows: {
     label: string;
     hint: string;
@@ -248,17 +227,6 @@ export function BillsOverview({ data }: { data: BillsReport }) {
 
   return (
     <div className="space-y-6">
-      {/* Page header */}
-      <div className="space-y-1">
-        <h1 className="text-2xl font-bold tracking-tight text-foreground">
-          Dashboard
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          A quick look at your billing and collection performance.
-        </p>
-      </div>
-
-      {/* Top stat cards */}
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard
           title="Total billed"
@@ -294,7 +262,6 @@ export function BillsOverview({ data }: { data: BillsReport }) {
         />
       </div>
 
-      {/* Collection rate + status breakdown */}
       <div className="grid gap-4 lg:grid-cols-5">
         <SectionCard
           title="Collection rate"
@@ -318,7 +285,6 @@ export function BillsOverview({ data }: { data: BillsReport }) {
           description="Where your billed amount currently stands"
           className="lg:col-span-3"
         >
-          {/* Stacked bar */}
           <div className="flex h-3 w-full overflow-hidden rounded-full bg-muted">
             {statusRows.map((row) => (
               <div
@@ -330,7 +296,6 @@ export function BillsOverview({ data }: { data: BillsReport }) {
             ))}
           </div>
 
-          {/* Rows */}
           <div className="mt-5 divide-y divide-border">
             {statusRows.map((row) => (
               <div
@@ -368,7 +333,6 @@ export function BillsOverview({ data }: { data: BillsReport }) {
         </SectionCard>
       </div>
 
-      {/* Payment methods */}
       <SectionCard
         title="Payment methods"
         description="How customers paid their bills"
