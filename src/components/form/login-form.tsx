@@ -2,7 +2,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useForm } from "@tanstack/react-form";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, ShieldCheck, User, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,14 +10,14 @@ import { loginSchema } from "@/validation";
 import { useLogin } from "@/hooks";
 import { toast } from "../ui/toast";
 import { useRouter } from "next/navigation";
+import { getErrorMessage } from "@/helper";
 
-function getErrorMessage(error: unknown): string {
-  if (typeof error === "string") return error;
-  if (error && typeof error === "object" && "message" in error) {
-    return String((error as { message: unknown }).message);
-  }
-  return "Invalid value";
-}
+// TODO: Collector ar customer er real demo email/password boshao.
+const QUICK_LOGINS = [
+  { label: "Admin", icon: ShieldCheck, email: "admin@gmail.com", password: "12345678" },
+  { label: "Collector", icon: Wallet, email: "rabby@gmail.com", password: "12345678" },
+  { label: "Customer", icon: User, email: "fahim@gmail.com", password: "12345678" },
+];
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -161,6 +161,34 @@ export function LoginForm() {
           >
             {isSubmitting ? "Logging in..." : "Log in"}
           </Button>
+          <div className="space-y-3 pt-2">
+    <div className="flex items-center gap-3">
+      <div className="h-px flex-1 bg-border" />
+      <span className="text-xs font-medium text-muted-foreground">
+        Quick login
+      </span>
+      <div className="h-px flex-1 bg-border" />
+    </div>
+
+    <div className="grid grid-cols-3 gap-2">
+      {QUICK_LOGINS.map((item) => (
+        <Button
+          key={item.label}
+          type="submit"
+          variant="outline"
+          disabled={isSubmitting}
+          className="h-10 gap-1.5 px-2"
+          onClick={() => {
+            form.setFieldValue("email", item.email);
+            form.setFieldValue("password", item.password);
+          }}
+        >
+          <item.icon className="size-4" />
+          {item.label}
+        </Button>
+      ))}
+    </div>
+  </div>
     </form>
   );
 }

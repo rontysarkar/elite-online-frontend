@@ -5,6 +5,7 @@ import {
   MapPin,
   Package,
   Receipt,
+  UserCog,
   Users,
   Wallet,
   type LucideIcon,
@@ -29,6 +30,7 @@ export const DASHBOARD_CONFIG: Record<DashboardRole, DashboardConfig> = {
     label: "Admin Panel",
     nav: [
       { title: "Dashboard", href: "/admin", icon: LayoutDashboard },
+      { title:"Users", href: "/admin/users", icon: UserCog },
       { title: "Requests", href: "/admin/requests", icon: FileText },
       { title: "Customers", href: "/admin/customers", icon: Users },
       { title: "Collectors", href: "/admin/collectors", icon: Wallet },

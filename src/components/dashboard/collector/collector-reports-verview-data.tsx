@@ -1,24 +1,18 @@
 "use client";
-
-import { useGetAdminReports } from "@/hooks";
+import { useGetAdminReports, useGetCollectorReports } from "@/hooks";
 import { Button } from "@/components/ui/button";
+import { ReportsOverview } from "../reports-overview";
+import { CollectorReportsOverviewDataProps } from "@/types";
+import { ReportsOverviewSkeleton } from "../skeleton/reports-overview-skeleton";
 
-
-import { BillsOverview } from "./bills-overview";
-import { BillsOverviewSkeleton } from "../skeleton/bills-overview-skeleton";
-import { BillsFilterValues } from "@/types";
-
-
-interface BillsOverviewDataProps {
-  filters: BillsFilterValues;
-}
-
-export function BillsOverviewData({ filters }: BillsOverviewDataProps) {
-
-  const { data, isPending, isError, refetch } = useGetAdminReports(filters);
+export function CollectorReportsOverviewData({
+  filters,
+}: CollectorReportsOverviewDataProps) {
+  const { data, isPending, isError, refetch } = useGetCollectorReports(filters);
+  
 
   if (isPending) {
-    return <BillsOverviewSkeleton />;
+    return <ReportsOverviewSkeleton />; 
   }
 
   if (isError || !data) {
@@ -37,5 +31,5 @@ export function BillsOverviewData({ filters }: BillsOverviewDataProps) {
     );
   }
 
-  return <BillsOverview data={data} />;
+  return <ReportsOverview data={data} />;
 }

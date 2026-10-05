@@ -15,7 +15,7 @@ const cardClass =
   "rounded-xl border border-border bg-card p-5 text-card-foreground shadow-sm sm:p-6";
 
 
-export function BillsOverviewSkeleton() {
+export function ReportsOverviewSkeleton() {
   return (
     <div className="space-y-6" role="status" aria-label="Loading bills report">
 

@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-
-import { BillsOverviewData } from "@/components/dashboard/admin/bills-overview-data";
-import { BillsFilters } from "@/components/dashboard/admin/bills-filters";
 import { AdminDashboardPageProps } from "@/types";
-
+import { AdminReportsFilters } from "@/components/dashboard/admin/admin-reports-filters";
+import { AdminReportsOverviewData } from "@/components/dashboard/admin/admin-reports-overview-data";
 export const metadata: Metadata = {
   title: "Admin Dashboard",
 };
@@ -25,9 +23,9 @@ export default async function AdminDashboardPage({
         </p>
       </div>
 
-      <BillsFilters values={filters} />
+      <AdminReportsFilters values={filters} />
 
-      <BillsOverviewData filters={filters} />
+      <AdminReportsOverviewData filters={filters} />
     </div>
   );
 }

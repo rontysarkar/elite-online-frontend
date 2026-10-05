@@ -9,9 +9,7 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { BillsReport } from "@/types/report.type";
-
-
+import { BillsReport } from "@/types";
 
 
 const numberFormat = new Intl.NumberFormat("en-BD");
@@ -158,7 +156,7 @@ function CollectionRing({ rate }: { rate: number }) {
   );
 }
 
-export function BillsOverview({ data }: { data: BillsReport }) {
+export function ReportsOverview({ data }: { data: BillsReport }) {
   const {
     totalBills,
     totalBillAmount,

@@ -13,30 +13,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { BillsFiltersProps, BillsFilterValues, CollectorOption, IApiResponse } from "@/types";
+import {  AdminReportFiltersProps, AdminReportFilterValues, CollectorOption, IApiResponse } from "@/types";
 import { useGetCollectors } from "@/hooks";
+import { ALL, monthItems, yearItems } from "@/constant";
 
 
-const ALL = "all";
-
-const MONTHS = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-
-
-
-export function BillsFilters({ values }: BillsFiltersProps) {
+export function AdminReportsFilters({ values }: AdminReportFiltersProps) {
   const { data: collectorResponse } = useGetCollectors() as { data: IApiResponse };
   const collectorsData = collectorResponse?.data;
   const CollectorValues: CollectorOption[] = collectorsData?.map((c:CollectorOption) => ({ id: c.id, name: c.name })) || [];
@@ -45,20 +27,6 @@ export function BillsFilters({ values }: BillsFiltersProps) {
   const pathname = usePathname();
   const [isPending, startTransition] = React.useTransition();
 
-
-  const currentYear = new Date().getFullYear();
-  const yearItems = [
-    { value: ALL, label: "All years" },
-    ...Array.from({ length: 5 }, (_, i) => {
-      const year = String(currentYear - i);
-      return { value: year, label: year };
-    }),
-  ];
-
-  const monthItems = [
-    { value: ALL, label: "All months" },
-    ...MONTHS.map((name, i) => ({ value: String(i + 1), label: name })),
-  ];
 
 
   const collectorItems = [
@@ -69,8 +37,8 @@ export function BillsFilters({ values }: BillsFiltersProps) {
 
   const hasFilters = Boolean(values.year || values.month || values.collectorId);
 
-  function updateFilter(key: keyof BillsFilterValues, value: string | null) {
-    const next: BillsFilterValues = {
+  function updateFilter(key: keyof AdminReportFilterValues, value: string | null) {
+    const next: AdminReportFilterValues = {
       ...values,
       [key]: !value || value === ALL ? undefined : value,
     };

@@ -1,0 +1,130 @@
+"use client";
+import * as React from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { SlidersHorizontal, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { cn } from "@/lib/utils";
+import {  CollectorReportFiltersProps, CollectorReportFilterValues } from "@/types";
+import { ALL, monthItems, yearItems } from "@/constant";
+
+
+export function CollectorReportFilters({ values }: CollectorReportFiltersProps) {
+ 
+  const router = useRouter();
+  const pathname = usePathname();
+  const [isPending, startTransition] = React.useTransition();
+
+  const hasFilters = Boolean(values.year || values.month );
+
+  function updateFilter(key: keyof CollectorReportFilterValues, value: string | null) {
+    const next: CollectorReportFilterValues = {
+      ...values,
+      [key]: !value || value === ALL ? undefined : value,
+    };
+
+  
+    if (key === "year" && !next.year) {
+      next.month = undefined;
+    }
+
+    const params = new URLSearchParams();
+    Object.entries(next).forEach(([k, v]) => {
+      if (v) params.set(k, v);
+    });
+
+    const query = params.toString();
+    startTransition(() => {
+      router.replace(query ? `${pathname}?${query}` : pathname, {
+        scroll: false,
+      });
+    });
+  }
+
+  return (
+    <div
+      className={cn(
+        "flex flex-col gap-3 rounded-xl border border-border bg-card p-3 shadow-sm transition-opacity sm:flex-row sm:flex-wrap sm:items-center sm:p-4",
+        isPending && "opacity-70",
+      )}
+    >
+      <div className="hidden items-center gap-2 pr-1 text-sm font-medium text-muted-foreground sm:flex">
+        <SlidersHorizontal className="size-4" />
+        Filters
+      </div>
+
+   
+      <Select
+        items={yearItems}
+        value={values.year ?? ALL}
+        onValueChange={(value) => updateFilter("year", value)}
+      >
+        <SelectTrigger aria-label="Year" className="h-10 w-full sm:w-40">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent
+          alignItemWithTrigger={false}
+          className="border border-border bg-popover shadow-lg"
+        >
+          {yearItems.map((item) => (
+            <SelectItem
+              key={item.value}
+              value={item.value}
+              className="cursor-pointer"
+            >
+              {item.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+
+
+      <Select
+        items={monthItems}
+        value={values.month ?? ALL}
+        onValueChange={(value) => updateFilter("month", value)}
+        disabled={!values.year}
+      >
+        <SelectTrigger aria-label="Month" className="h-10 w-full sm:w-44">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent
+          alignItemWithTrigger={false}
+          className="border border-border bg-popover shadow-lg"
+        >
+          {monthItems.map((item) => (
+            <SelectItem
+              key={item.value}
+              value={item.value}
+              className="cursor-pointer"
+            >
+              {item.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+
+      {hasFilters && (
+        <Button
+          type="button"
+          variant="ghost"
+          className="h-10 text-muted-foreground hover:text-foreground sm:ml-auto"
+          onClick={() => {
+            startTransition(() => {
+              router.replace(pathname, { scroll: false });
+            });
+          }}
+        >
+          <X className="size-4" />
+          Reset
+        </Button>
+      )}
+    </div>
+  );
+}

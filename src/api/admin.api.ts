@@ -1,5 +1,5 @@
 import { apiClient } from "@/lib/api-client"
-import { AdminReportFilters } from "@/types";
+import { AdminReportFilters, UsersQuery } from "@/types";
 
 
 export function getCollectors() {
@@ -18,5 +18,19 @@ export function getAdminReports(filters: AdminReportFilters = {}) {
   return apiClient(`/reports/admin${query ? `?${query}` : ""}`, {
     method: "GET",
   });
+}
+
+export function getUsers(filters: UsersQuery) {
+  const params = new URLSearchParams();
+  
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value) params.set(key, String(value));
+  });
+  
+  return apiClient(`/users?${params.toString()}`, { method: "GET" }); 
+}
+
+export function deleteUser(id: string) {
+  return apiClient(`/users/${id}`, { method: "DELETE" });
 }
 

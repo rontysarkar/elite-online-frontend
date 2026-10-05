@@ -1,4 +1,3 @@
-import { BillsFilterValues } from "./report.type";
 
 export interface AdminReportFilters {
   year?: string;
@@ -6,6 +5,28 @@ export interface AdminReportFilters {
   collectorId?: string;
 }
 
-export interface AdminDashboardPageProps {
-  searchParams: Promise<BillsFilterValues>;
+export interface AdminReportFilterValues {
+  year?: string;
+  month?: string;
+  collectorId?: string;
 }
+
+export interface AdminDashboardPageProps {
+  searchParams: Promise<AdminReportFilterValues>;
+}
+
+export interface AdminReportsOverviewDataProps {
+  filters: AdminReportFilterValues;
+}
+
+
+export interface CollectorOption {
+  id: string;
+  name: string;
+}
+
+export interface AdminReportFiltersProps {
+  values: AdminReportFilterValues; 
+}
+
+
