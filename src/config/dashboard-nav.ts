@@ -31,8 +31,8 @@ export const DASHBOARD_CONFIG: Record<DashboardRole, DashboardConfig> = {
     nav: [
       { title: "Dashboard", href: "/admin", icon: LayoutDashboard },
       { title:"Users", href: "/admin/users", icon: UserCog },
-      { title: "Requests", href: "/admin/requests", icon: FileText },
       { title: "Customers", href: "/admin/customers", icon: Users },
+      { title: "Requests", href: "/admin/requests", icon: FileText },
       { title: "Collectors", href: "/admin/collectors", icon: Wallet },
       { title: "Packages", href: "/admin/packages", icon: Package },
       { title: "Areas", href: "/admin/areas", icon: MapPin },

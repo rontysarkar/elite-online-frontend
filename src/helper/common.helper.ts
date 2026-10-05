@@ -3,7 +3,6 @@ export function normalizePhone(phone: string): string {
   return digits.startsWith("88") ? `+${digits}` : `+88${digits}`;
 }
 
-
 export function getErrorMessage(error: unknown): string {
   if (typeof error === "string") return error;
   if (error && typeof error === "object" && "message" in error) {
@@ -11,7 +10,6 @@ export function getErrorMessage(error: unknown): string {
   }
   return "Invalid value";
 }
-
 
 export function maskEmail(email: string) {
   const [name, domain] = email.split("@");
@@ -25,7 +23,6 @@ export function formatTime(totalSeconds: number) {
   return `${minutes}:${seconds}`;
 }
 
-
 export function getPageNumbers(current: number, total: number) {
   const start = Math.max(1, Math.min(current - 2, total - 4));
   const end = Math.min(total, start + 4);
@@ -34,4 +31,28 @@ export function getPageNumbers(current: number, total: number) {
   return pages;
 }
 
+export function formatDate(value: string) {
+  return new Date(value).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
 
+// export function getInitials(name: string) {
+//   return name
+//     .split(" ")
+//     .filter(Boolean)
+//     .slice(0, 2)
+//     .map((part) => part[0]?.toUpperCase())
+//     .join("");
+// }
+
+export function getInitials(name?: string | null) {
+  return (name ?? "")
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join("");
+}

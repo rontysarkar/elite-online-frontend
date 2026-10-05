@@ -33,7 +33,7 @@ import {
 import { cn } from "@/lib/utils";
 import { User, UserRole, UsersUrlParams } from "@/types";
 import { useDeleteUser, useGetUsers } from "@/hooks";
-import { getPageNumbers } from "@/helper";
+import {  getInitials, getPageNumbers } from "@/helper";
 import { ALL, LIMIT, ROLE_ITEMS, ROLE_LABELS } from "@/constant";
 import { Skeleton } from "../skeleton";
 import { StatCard } from "./users-stat-card";
@@ -47,14 +47,7 @@ const ROLE_STYLES: Record<UserRole, string> = {
 
 
 
-function getInitials(name: string) {
-  return name
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase())
-    .join("");
-}
+
 
 export function UsersManagement({ params }: { params: UsersUrlParams }) {
   const router = useRouter();

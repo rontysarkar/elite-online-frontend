@@ -1,5 +1,5 @@
-import { deleteUser, getAdminReports, getCollectors, getUsers } from "@/api/admin.api";
-import {  AdminReportFilters, IApiResponse, UsersQuery } from "@/types";
+import { deleteUser, getAdminReports, getCollectors, getCustomerById, getCustomers, getUsers } from "@/api/admin.api";
+import {  AdminReportFilters, CustomersQuery, IApiResponse, UsersQuery } from "@/types";
 
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -39,5 +39,28 @@ export function useDeleteUser() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] }); 
     },
+  });
+}
+
+
+export function useGetCustomers(filters: CustomersQuery) {
+  return useQuery({
+    queryKey: ["customers", filters],
+    queryFn: async () => {
+      const res = await getCustomers(filters);
+      return { ...res.data, meta: res.meta }; 
+    },
+    placeholderData: keepPreviousData, 
+  });
+}
+
+export function useGetCustomerById(id: string) {
+  return useQuery({
+    queryKey: ["customer", id],
+    queryFn: async () => {
+      const res = await getCustomerById(id);
+      return res.data; 
+    },
+    placeholderData: null, 
   });
 }
