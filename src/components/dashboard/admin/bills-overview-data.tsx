@@ -14,7 +14,7 @@ interface BillsOverviewDataProps {
 }
 
 export function BillsOverviewData({ filters }: BillsOverviewDataProps) {
-  // Whenever `filters` change, TanStack Query fetches again automatically.
+
   const { data, isPending, isError, refetch } = useGetAdminReports(filters);
 
   if (isPending) {

@@ -30,11 +30,6 @@ export interface CollectorOption {
 
 export interface BillsFiltersProps {
   values: BillsFilterValues; 
-  collectors: CollectorOption[];
+
 }
 
-export interface AdminReportFilters {
-  year?: string;
-  month?: string;
-  collectorId?: string;
-}

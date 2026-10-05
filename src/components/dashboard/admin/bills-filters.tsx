@@ -13,7 +13,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { BillsFiltersProps, BillsFilterValues } from "@/types";
+import { BillsFiltersProps, BillsFilterValues, CollectorOption, IApiResponse } from "@/types";
+import { useGetCollectors } from "@/hooks";
 
 
 const ALL = "all";
@@ -35,7 +36,11 @@ const MONTHS = [
 
 
 
-export function BillsFilters({ values, collectors }: BillsFiltersProps) {
+export function BillsFilters({ values }: BillsFiltersProps) {
+  const { data: collectorResponse } = useGetCollectors() as { data: IApiResponse };
+  const collectorsData = collectorResponse?.data;
+  const CollectorValues: CollectorOption[] = collectorsData?.map((c:CollectorOption) => ({ id: c.id, name: c.name })) || [];
+
   const router = useRouter();
   const pathname = usePathname();
   const [isPending, startTransition] = React.useTransition();
@@ -58,8 +63,9 @@ export function BillsFilters({ values, collectors }: BillsFiltersProps) {
 
   const collectorItems = [
     { value: ALL, label: "All collectors" },
-    ...collectors.map((c) => ({ value: c.id, label: c.name })),
+    ...CollectorValues.map((c) => ({ value: c.id, label: c.name })),
   ];
+  
 
   const hasFilters = Boolean(values.year || values.month || values.collectorId);
 

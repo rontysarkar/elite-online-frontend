@@ -2,11 +2,9 @@ import { apiClient } from "@/lib/api-client"
 import { AdminReportFilters } from "@/types";
 
 
-// export function getAdminReports(){
-//     return apiClient("/reports/admin",{method: "GET"})    
-// }   
-
-
+export function getCollectors() {
+    return apiClient("/collectors",{method: "GET"})
+}
 
 export function getAdminReports(filters: AdminReportFilters = {}) {
   const params = new URLSearchParams();
@@ -21,3 +19,4 @@ export function getAdminReports(filters: AdminReportFilters = {}) {
     method: "GET",
   });
 }
+
