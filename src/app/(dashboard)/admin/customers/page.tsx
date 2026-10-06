@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { AreaOption, CollectorOption, PackageOption } from "@/types";
 import { CustomersManagement, CustomersUrlParams } from "@/components/dashboard/admin/customers-management";
 import { CreateCustomerButton } from "@/components/dashboard/admin/create-customer-button";
+import { useGetAreas, useGetPackages } from "@/hooks";
 
 
 export const metadata: Metadata = {
@@ -53,6 +54,7 @@ export default async function AdminCustomersPage({
   searchParams,
 }: AdminCustomersPageProps) {
   const { page, searchTerm, collectorId, areaId, status } = await searchParams;
+  
 
   return (
     <div className="space-y-6">
@@ -74,8 +76,6 @@ export default async function AdminCustomersPage({
 
       <CustomersManagement
         params={{ page, searchTerm, collectorId, areaId, status }}
-        collectors={placeholderCollectors}
-        areas={placeholderAreas}
       />
     </div>
   );

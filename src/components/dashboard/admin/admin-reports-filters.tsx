@@ -19,15 +19,12 @@ import { ALL, monthItems, yearItems } from "@/constant";
 
 
 export function AdminReportsFilters({ values }: AdminReportFiltersProps) {
-  const { data: collectorResponse } = useGetCollectors() as { data: IApiResponse };
-  const collectorsData = collectorResponse?.data;
+  const { data: collectorsData } = useGetCollectors()
   const CollectorValues: CollectorOption[] = collectorsData?.map((c:CollectorOption) => ({ id: c.id, name: c.name })) || [];
 
   const router = useRouter();
   const pathname = usePathname();
   const [isPending, startTransition] = React.useTransition();
-
-
 
   const collectorItems = [
     { value: ALL, label: "All collectors" },

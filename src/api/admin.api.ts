@@ -1,5 +1,5 @@
 import { apiClient } from "@/lib/api-client"
-import { AdminReportFilters, CustomersQuery, UsersQuery } from "@/types";
+import { AdminReportFilters, CustomersQuery, CustomerStatus, UsersQuery } from "@/types";
 
 
 export function getCollectors() {
@@ -49,3 +49,10 @@ export function getCustomerById(id: string) {
   return apiClient(`/customers/${id}`, { method: "GET" }); 
 }
 
+
+export function changeCustomerStatus(id: string, status: CustomerStatus) {
+  return apiClient(`/customers/status/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify({status}),
+  });
+}

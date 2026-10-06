@@ -1,12 +1,34 @@
-import { deleteUser, getAdminReports, getCollectors, getCustomerById, getCustomers, getUsers } from "@/api/admin.api";
-import {  AdminReportFilters, CustomersQuery, IApiResponse, UsersQuery } from "@/types";
+import {
+  changeCustomerStatus,
+  deleteUser,
+  getAdminReports,
+  getCollectors,
+  getCustomerById,
+  getCustomers,
+  getUsers,
+} from "@/api/admin.api";
+import {
+  AdminReportFilters,
+  CustomersQuery,
+  CustomerStatus,
+  IApiResponse,
+  UsersQuery,
+} from "@/types";
 
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 export function useGetCollectors() {
   return useQuery({
     queryKey: ["collectors"],
-    queryFn: getCollectors,
+    queryFn: async () => {
+      const res = await getCollectors();
+      return res.data;
+    },
   });
 }
 
@@ -15,42 +37,40 @@ export function useGetAdminReports(filters: AdminReportFilters) {
     queryKey: ["admin-reports", filters],
     queryFn: async () => {
       const res: IApiResponse = await getAdminReports(filters);
-      return res.data; 
+      return res.data;
     },
   });
 }
-
 
 export function useGetUsers(filters: UsersQuery) {
   return useQuery({
     queryKey: ["users", filters],
     queryFn: async () => {
       const res = await getUsers(filters);
-      return { ...res.data, meta: res.meta }; 
+      return { ...res.data, meta: res.meta };
     },
-    placeholderData: keepPreviousData, 
+    placeholderData: keepPreviousData,
   });
 }
 
 export function useDeleteUser() {
-  const queryClient = useQueryClient(); 
+  const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id: string) => deleteUser(id), 
+    mutationFn: (id: string) => deleteUser(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["users"] }); 
+      queryClient.invalidateQueries({ queryKey: ["users"] });
     },
   });
 }
 
-
 export function useGetCustomers(filters: CustomersQuery) {
   return useQuery({
-    queryKey: ["customers", filters],
+    queryKey: ["customers",filters],
     queryFn: async () => {
       const res = await getCustomers(filters);
-      return { ...res.data, meta: res.meta }; 
+      return { ...res.data, meta: res.meta };
     },
-    placeholderData: keepPreviousData, 
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -59,8 +79,20 @@ export function useGetCustomerById(id: string) {
     queryKey: ["customer", id],
     queryFn: async () => {
       const res = await getCustomerById(id);
-      return res.data; 
+      return res.data;
     },
-    placeholderData: null, 
+    placeholderData: null,
+  });
+}
+
+export function useChangeCustomerStatus() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, status }: { id: string; status: CustomerStatus }) =>
+      changeCustomerStatus(id, status),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["customers"] });
+    },
   });
 }

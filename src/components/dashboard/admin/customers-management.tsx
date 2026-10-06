@@ -22,8 +22,6 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
-
-
 import { CustomerDetailsModal } from "./customer-details-modal";
 import { CustomerStatusBadge } from "./customer-status-badge";
 import { ALL, LIMIT } from "@/constant";
@@ -31,9 +29,14 @@ import { AreaOption, CollectorOption, ICustomerResponse } from "@/types";
 import { StatCard } from "./users-stat-card";
 import { Skeleton } from "../skeleton";
 import { Pagination } from "../pagination";
-import { useGetCustomers } from "@/hooks";
+import {
+  useChangeCustomerStatus,
+  useGetAreas,
+  useGetCollectors,
+  useGetCustomers,
+} from "@/hooks";
 import { getInitials } from "@/helper";
-
+import { toast } from "@/components/ui/toast";
 
 export interface CustomersUrlParams {
   page?: string;
@@ -54,9 +57,6 @@ const STATUS_ITEMS: FilterItem[] = [
   { value: "INACTIVE", label: "Inactive" },
 ];
 
-
-
-
 function FilterSelect({
   label,
   value,
@@ -76,7 +76,10 @@ function FilterSelect({
       value={value}
       onValueChange={(next) => onChange(next ?? ALL)}
     >
-      <SelectTrigger aria-label={label} className={cn("h-10 w-full", className)}>
+      <SelectTrigger
+        aria-label={label}
+        className={cn("h-10 w-full", className)}
+      >
         <SelectValue />
       </SelectTrigger>
       <SelectContent
@@ -97,17 +100,11 @@ function FilterSelect({
   );
 }
 
-interface CustomersManagementProps {
-  params: CustomersUrlParams;
-  collectors: CollectorOption[];
-  areas: AreaOption[];
-}
-
 export function CustomersManagement({
   params,
-  collectors,
-  areas,
-}: CustomersManagementProps) {
+}: {
+  params: CustomersUrlParams;
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const [isNavigating, startTransition] = React.useTransition();
@@ -116,7 +113,6 @@ export function CustomersManagement({
   const [searchInput, setSearchInput] = React.useState(params.searchTerm ?? "");
   const [customerToUpdate, setCustomerToUpdate] =
     React.useState<ICustomerResponse | null>(null);
-  const [isUpdating, setIsUpdating] = React.useState(false);
   const [selectedCustomerId, setSelectedCustomerId] = React.useState<
     string | null
   >(null);
@@ -130,6 +126,12 @@ export function CustomersManagement({
     status: params.status,
   });
 
+  const { data: areasData } = useGetAreas();
+  const { data: collectorsData } = useGetCollectors();
+  const collectors: CollectorOption[] =
+    collectorsData?.map((c: any) => ({ id: c.id, name: c.name })) ?? [];
+  const areas: AreaOption[] =
+    areasData?.map((a: any) => ({ id: a.id, name: a.name })) ?? [];
 
   const updateParams = React.useCallback(
     (patch: Partial<CustomersUrlParams>) => {
@@ -176,14 +178,36 @@ export function CustomersManagement({
     return () => clearTimeout(timer);
   }, [searchInput, params.searchTerm, updateParams]);
 
+  const { mutate: changeCustomerStatus, isPending: isUpdating } =
+    useChangeCustomerStatus();
+
   async function handleConfirmStatusChange() {
     if (!customerToUpdate) return;
     const nextStatus =
       customerToUpdate.status === "ACTIVE" ? "INACTIVE" : "ACTIVE";
 
-    setIsUpdating(true);
-    console.log({ id: customerToUpdate.id, status: nextStatus });
-    setIsUpdating(false);
+    changeCustomerStatus(
+      { id: customerToUpdate.id, status: nextStatus },
+      {
+        onSuccess: () => {
+          toast.add({
+            title: "Customer status changed successfully",
+            description: "The customer status has been changed successfully.",
+            type: "success",
+          });
+          setCustomerToUpdate(null);
+        },
+        onError: (err) => {
+          toast.add({
+            title: "Couldn't change customer status",
+            description:"Something went wrong. Please try again.",
+            type: "error",
+          });
+          setCustomerToUpdate(null);
+        },
+      },
+    );
+
     setCustomerToUpdate(null);
   }
 
@@ -347,7 +371,7 @@ export function CustomersManagement({
 
               {!isPending &&
                 !isError &&
-                customers.map((customer:ICustomerResponse) => {
+                customers.map((customer: ICustomerResponse) => {
                   const active = customer.status === "ACTIVE";
 
                   return (
