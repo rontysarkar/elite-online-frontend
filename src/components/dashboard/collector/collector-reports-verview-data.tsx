@@ -1,7 +1,7 @@
 "use client";
 import { useGetAdminReports, useGetCollectorReports } from "@/hooks";
 import { Button } from "@/components/ui/button";
-import { ReportsOverview } from "../reports-overview";
+import { ReportsOverview } from "../components/reports-overview";
 import { CollectorReportsOverviewDataProps } from "@/types";
 import { ReportsOverviewSkeleton } from "../skeleton/reports-overview-skeleton";
 
@@ -9,10 +9,9 @@ export function CollectorReportsOverviewData({
   filters,
 }: CollectorReportsOverviewDataProps) {
   const { data, isPending, isError, refetch } = useGetCollectorReports(filters);
-  
 
   if (isPending) {
-    return <ReportsOverviewSkeleton />; 
+    return <ReportsOverviewSkeleton />;
   }
 
   if (isError || !data) {

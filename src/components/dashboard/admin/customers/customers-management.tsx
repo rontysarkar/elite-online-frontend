@@ -25,10 +25,10 @@ import { cn } from "@/lib/utils";
 import { CustomerDetailsModal } from "./customer-details-modal";
 import { CustomerStatusBadge } from "./customer-status-badge";
 import { ALL, LIMIT } from "@/constant";
-import { AreaOption, CollectorOption, ICustomerResponse } from "@/types";
-import { StatCard } from "./users-stat-card";
-import { Skeleton } from "../skeleton";
-import { Pagination } from "../pagination";
+import { CollectorOption } from "@/types";
+// import { StatCard } from "./users-stat-card";
+import { Skeleton } from "../../skeleton/skeleton";
+import { Pagination } from "../../components/pagination";
 import {
   useChangeCustomerStatus,
   useGetAreas,
@@ -37,6 +37,8 @@ import {
 } from "@/hooks";
 import { getInitials } from "@/helper";
 import { toast } from "@/components/ui/toast";
+import { StatCard } from "../../components/stat-card";
+import { AreaOption, ICustomerResponse } from "@/types/customers-types";
 
 export interface CustomersUrlParams {
   page?: string;
@@ -200,15 +202,13 @@ export function CustomersManagement({
         onError: (err) => {
           toast.add({
             title: "Couldn't change customer status",
-            description:"Something went wrong. Please try again.",
+            description: "Something went wrong. Please try again.",
             type: "error",
           });
           setCustomerToUpdate(null);
         },
       },
     );
-
-    setCustomerToUpdate(null);
   }
 
   const collectorItems: FilterItem[] = [

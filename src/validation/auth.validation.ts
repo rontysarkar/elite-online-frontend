@@ -30,7 +30,7 @@ export const ConnectionRequestSchema = z.object({
   packageId: z.string().min(1, "Please select a package"),
 });
 
-export type ConnectionRequestValues = z.infer<typeof ConnectionRequestSchema>;
+export type TConnectionRequestValues = z.infer<typeof ConnectionRequestSchema>;
 
 
 

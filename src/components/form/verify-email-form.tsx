@@ -14,7 +14,7 @@ import { useResendEmailVerify, useVerifyEmail } from "@/hooks";
 import { toast } from "../ui/toast";
 
 const OTP_LENGTH = 6;
-const RESEND_SECONDS = 5 ;
+const RESEND_SECONDS = 5 * 60;
 
 export const verifyEmailSchema = z.object({
   otp: z

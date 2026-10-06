@@ -9,7 +9,7 @@ export function useGetAreas() {
         queryKey: ["areas"],
         queryFn:async () => {
             const data = await getAreas()
-            return data.data
+            return data?.data
         },
     })
 }
@@ -17,6 +17,9 @@ export function useGetAreas() {
 export function useGetPackages() {
     return useQuery({
         queryKey: ["packages"],
-        queryFn: getPackages,
+        queryFn: async()=>{
+            const data = await getPackages()
+            return data?.data
+        },
     })
 }

@@ -33,10 +33,10 @@ import {
 import { cn } from "@/lib/utils";
 import { User, UserRole, UsersUrlParams } from "@/types";
 import { useDeleteUser, useGetUsers } from "@/hooks";
-import {  getInitials, getPageNumbers } from "@/helper";
+import { getInitials, getPageNumbers } from "@/helper";
 import { ALL, LIMIT, ROLE_ITEMS, ROLE_LABELS } from "@/constant";
-import { Skeleton } from "../skeleton";
-import { StatCard } from "./users-stat-card";
+import { Skeleton } from "../../skeleton/skeleton";
+import { StatCard } from "../../components/stat-card";
 import { toast } from "@/components/ui/toast";
 
 const ROLE_STYLES: Record<UserRole, string> = {
@@ -44,10 +44,6 @@ const ROLE_STYLES: Record<UserRole, string> = {
   COLLECTOR: "bg-secondary/10 text-secondary",
   CUSTOMER: "bg-muted text-muted-foreground",
 };
-
-
-
-
 
 export function UsersManagement({ params }: { params: UsersUrlParams }) {
   const router = useRouter();
@@ -102,20 +98,17 @@ export function UsersManagement({ params }: { params: UsersUrlParams }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchInput]);
 
-
-  const {mutate: deleteUser,isPending: isDeleting} = useDeleteUser();
+  const { mutate: deleteUser, isPending: isDeleting } = useDeleteUser();
 
   async function handleConfirmDelete() {
     if (!userToDelete) return;
-    deleteUser(userToDelete.id,{
+    deleteUser(userToDelete.id, {
       onSuccess: () => {
         toast.add({
           title: "User deleted",
           description: "User deleted successfully",
           type: "success",
         });
-        
-
       },
       onError: (error) => {
         toast.add({
@@ -125,7 +118,7 @@ export function UsersManagement({ params }: { params: UsersUrlParams }) {
         });
       },
     });
-      
+
     setUserToDelete(null);
   }
 

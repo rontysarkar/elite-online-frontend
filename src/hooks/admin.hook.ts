@@ -1,19 +1,23 @@
 import {
+  acceptConnectionRequest,
   changeCustomerStatus,
+  createCustomer,
   deleteUser,
   getAdminReports,
   getCollectors,
+  getConnectionRequests,
   getCustomerById,
   getCustomers,
   getUsers,
 } from "@/api/admin.api";
 import {
   AdminReportFilters,
-  CustomersQuery,
   CustomerStatus,
   IApiResponse,
   UsersQuery,
 } from "@/types";
+import { CustomersQuery } from "@/types/customers-types";
+import { TConnectionRequestValues } from "@/validation";
 
 import {
   keepPreviousData,
@@ -65,7 +69,7 @@ export function useDeleteUser() {
 
 export function useGetCustomers(filters: CustomersQuery) {
   return useQuery({
-    queryKey: ["customers",filters],
+    queryKey: ["customers", filters],
     queryFn: async () => {
       const res = await getCustomers(filters);
       return { ...res.data, meta: res.meta };
@@ -91,6 +95,37 @@ export function useChangeCustomerStatus() {
   return useMutation({
     mutationFn: ({ id, status }: { id: string; status: CustomerStatus }) =>
       changeCustomerStatus(id, status),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["customers"] });
+    },
+  });
+}
+
+export function useGetConnectionRequests() {
+  return useQuery({
+    queryKey: ["connection-requests"],
+    queryFn: async () => {
+      const res = await getConnectionRequests();
+      return res.data;
+    },
+  });
+}
+
+export function useAcceptConnectionRequest() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => acceptConnectionRequest(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["connection-requests"] });
+    },
+  });
+}
+
+
+export function useCreateCustomer() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: TConnectionRequestValues) => createCustomer(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["customers"] });
     },

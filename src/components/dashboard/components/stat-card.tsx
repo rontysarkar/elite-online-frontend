@@ -1,7 +1,7 @@
 import { LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { Skeleton } from "../skeleton";
+import { Skeleton } from "../skeleton/skeleton";
 
 const STAT_TONES = {
   primary: "bg-primary/10 text-primary",

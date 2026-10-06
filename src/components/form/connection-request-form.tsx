@@ -18,14 +18,14 @@ import { toast } from "../ui/toast";
 import { useRouter } from "next/navigation";
 
 export function ConnectionRequestForm() {
-  const { data: areasResponse } = useGetAreas() as { data: IApiResponse };
-  const { data: packagesResponse } = useGetPackages() as { data: IApiResponse };
+  const { data: areasData } = useGetAreas();
+  const { data: packagesData } = useGetPackages();
   const { mutate: sendConnectionRequest, isPending: isSubmitting } =
     useSendConnectionRequest();
-    const router = useRouter();
+  const router = useRouter();
 
-  const AREAS: IArea[] = areasResponse?.data || [];
-  const PACKAGES: IInternetPackage[] = packagesResponse?.data || [];
+  const AREAS: IArea[] = areasData || [];
+  const PACKAGES: IInternetPackage[] = packagesData || [];
 
   const areaItems = AREAS.map((area) => ({ value: area.id, label: area.name }));
   const packageItems = PACKAGES.map((pkg) => ({
@@ -55,7 +55,7 @@ export function ConnectionRequestForm() {
         packageId: value.packageId,
       };
 
-      await sendConnectionRequest(payload, {
+      sendConnectionRequest(payload, {
         onSuccess: (res) => {
           if (!res.success) {
             toast.add({
@@ -73,14 +73,13 @@ export function ConnectionRequestForm() {
             type: "success",
           });
 
-          const params = new URLSearchParams({email: value.email});
+          const params = new URLSearchParams({ email: value.email });
           router.push(`/request-connection/verify-email?${params.toString()}`);
-          
         },
         onError: () => {
           toast.add({
             title: "Connection request failed",
-            description: "Please check your details and try again.",
+            description: "Customer Already Exist",
             type: "error",
           });
         },

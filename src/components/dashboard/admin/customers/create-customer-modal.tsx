@@ -4,7 +4,6 @@ import * as React from "react";
 import { useForm } from "@tanstack/react-form";
 import { UserPlus } from "lucide-react";
 
-
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -22,11 +21,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { AreaOption, PackageOption } from "@/types";
+
 import { getErrorMessage, normalizePhone } from "@/helper";
-import { ConnectionRequestSchema, ConnectionRequestValues } from "@/validation";
-
-
+import {
+  ConnectionRequestSchema,
+  TConnectionRequestValues,
+} from "@/validation";
+import { AreaOption, PackageOption } from "@/types/customers-types";
+import { useCreateCustomer, useGetAreas, useGetPackages } from "@/hooks";
+import { toast } from "@/components/ui/toast";
 
 interface FormFieldApi {
   name: string;
@@ -156,6 +159,8 @@ export function CreateCustomerModal({
     label: `${pkg.name} · ${pkg.speed} · ৳${pkg.price}/mo`,
   }));
 
+  const { mutate: createCustomer, isPending: isCreating } = useCreateCustomer();
+
   const form = useForm({
     defaultValues: {
       name: "",
@@ -164,10 +169,11 @@ export function CreateCustomerModal({
       address: "",
       areaId: "",
       packageId: "",
-    } as ConnectionRequestValues,
+    } as TConnectionRequestValues,
     validators: {
       onChange: ConnectionRequestSchema,
     },
+
     onSubmit: async ({ value }) => {
       const payload = {
         name: value.name.trim(),
@@ -178,9 +184,35 @@ export function CreateCustomerModal({
         packageId: value.packageId,
       };
 
-      console.log(payload);
-      form.reset();
-      onOpenChange(false);
+      createCustomer(payload, {
+        onSuccess: (res) => {
+          if (!res.success) {
+            toast.add({
+              title: "Customer creation failed",
+              description: "Something went wrong. Please try again.",
+              type: "error",
+            });
+            onOpenChange(false);
+            return;
+          }
+
+          toast.add({
+            title: "Customer creation successful",
+            description: "Customer created successfully.",
+            type: "success",
+          });
+          onOpenChange(false);
+        },
+        onError: () => {
+          toast.add({
+            title: "Customer creation failed",
+            description: "Customer Already Exist",
+            type: "error",
+          });
+
+          onOpenChange(false);
+        },
+      });
     },
   });
 
@@ -288,30 +320,26 @@ export function CreateCustomerModal({
             )}
           </form.Field>
 
-          <form.Subscribe selector={(state) => state.isSubmitting}>
-            {(isSubmitting) => (
-              <div className="flex flex-col-reverse gap-2 pt-2 sm:flex-row sm:justify-end">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="lg"
-                  className="h-11"
-                  disabled={isSubmitting}
-                  onClick={() => handleOpenChange(false)}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="h-11"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? "Creating..." : "Create customer"}
-                </Button>
-              </div>
-            )}
-          </form.Subscribe>
+          <div className="flex flex-col-reverse gap-2 pt-2 sm:flex-row sm:justify-end">
+            <Button
+              type="button"
+              variant="outline"
+              size="lg"
+              className="h-11"
+              disabled={isCreating}
+              onClick={() => handleOpenChange(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              size="lg"
+              className="h-11"
+              disabled={isCreating}
+            >
+              {isCreating ? "Creating..." : "Create customer"}
+            </Button>
+          </div>
         </form>
       </DialogContent>
     </Dialog>

@@ -1,8 +1,6 @@
-import { UsersManagement } from "@/components/dashboard/admin/users-management";
+import { UsersManagement } from "@/components/dashboard/admin/users/users-management";
 import { UsersUrlParams } from "@/types";
 import type { Metadata } from "next";
-
-
 
 export const metadata: Metadata = {
   title: "Users",

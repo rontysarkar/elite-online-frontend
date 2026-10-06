@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { AdminDashboardPageProps } from "@/types";
-import { AdminReportsFilters } from "@/components/dashboard/admin/admin-reports-filters";
-import { AdminReportsOverviewData } from "@/components/dashboard/admin/admin-reports-overview-data";
+import { AdminReportsFilters } from "@/components/dashboard/admin/reports/admin-reports-filters";
+import { AdminReportsOverviewData } from "@/components/dashboard/admin/reports/admin-reports-overview-data";
+
 export const metadata: Metadata = {
   title: "Admin Dashboard",
 };

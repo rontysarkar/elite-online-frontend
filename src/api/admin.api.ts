@@ -1,9 +1,10 @@
-import { apiClient } from "@/lib/api-client"
-import { AdminReportFilters, CustomersQuery, CustomerStatus, UsersQuery } from "@/types";
-
+import { apiClient } from "@/lib/api-client";
+import { AdminReportFilters, CustomerStatus, UsersQuery } from "@/types";
+import { CustomersQuery } from "@/types/customers-types";
+import { TConnectionRequestValues } from "@/validation";
 
 export function getCollectors() {
-    return apiClient("/collectors",{method: "GET"})
+  return apiClient("/collectors", { method: "GET" });
 }
 
 export function getAdminReports(filters: AdminReportFilters = {}) {
@@ -22,37 +23,52 @@ export function getAdminReports(filters: AdminReportFilters = {}) {
 
 export function getUsers(filters: UsersQuery) {
   const params = new URLSearchParams();
-  
+
   Object.entries(filters).forEach(([key, value]) => {
     if (value) params.set(key, String(value));
   });
-  
-  return apiClient(`/users?${params.toString()}`, { method: "GET" }); 
+
+  return apiClient(`/users?${params.toString()}`, { method: "GET" });
 }
 
 export function deleteUser(id: string) {
   return apiClient(`/users/${id}`, { method: "DELETE" });
 }
 
+export function createCustomer(payload: TConnectionRequestValues) {
+  return apiClient(`/customers`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
 
 export function getCustomers(filters: CustomersQuery) {
   const params = new URLSearchParams();
-  
+
   Object.entries(filters).forEach(([key, value]) => {
     if (value) params.set(key, String(value));
   });
-  
-  return apiClient(`/customers?${params.toString()}`, { method: "GET" }); 
+
+  return apiClient(`/customers?${params.toString()}`, { method: "GET" });
 }
 
 export function getCustomerById(id: string) {
-  return apiClient(`/customers/${id}`, { method: "GET" }); 
+  return apiClient(`/customers/${id}`, { method: "GET" });
 }
-
 
 export function changeCustomerStatus(id: string, status: CustomerStatus) {
   return apiClient(`/customers/status/${id}`, {
     method: "PATCH",
-    body: JSON.stringify({status}),
+    body: JSON.stringify({ status }),
+  });
+}
+
+export function getConnectionRequests() {
+  return apiClient("/connection-request", { method: "GET" });
+}
+
+export function acceptConnectionRequest(id: string) {
+  return apiClient(`/connection-request/${id}`, {
+    method: "POST",
   });
 }

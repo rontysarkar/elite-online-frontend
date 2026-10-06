@@ -4,21 +4,15 @@ import * as React from "react";
 import { Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-
+import { AreaOption, PackageOption } from "@/types/customers-types";
 import { CreateCustomerModal } from "./create-customer-modal";
-import { AreaOption, PackageOption } from "@/types";
+import { useGetAreas, useGetPackages } from "@/hooks";
 
 
-interface CreateCustomerButtonProps {
-  areas: AreaOption[];
-  packages: PackageOption[];
-}
-
-export function CreateCustomerButton({
-  areas,
-  packages,
-}: CreateCustomerButtonProps) {
+export function CreateCustomerButton() {
   const [open, setOpen] = React.useState(false);
+  const {data: areasData} = useGetAreas()
+  const {data: packagesData} = useGetPackages()
 
   return (
     <>
@@ -30,8 +24,8 @@ export function CreateCustomerButton({
       <CreateCustomerModal
         open={open}
         onOpenChange={setOpen}
-        areas={areas}
-        packages={packages}
+        areas={areasData || []}
+        packages={packagesData || []}
       />
     </>
   );

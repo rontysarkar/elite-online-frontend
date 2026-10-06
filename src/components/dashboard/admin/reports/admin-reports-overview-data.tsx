@@ -1,13 +1,16 @@
+
 "use client";
 import { useGetAdminReports } from "@/hooks";
 import { Button } from "@/components/ui/button";
-import { ReportsOverview } from "../reports-overview";
-import {  AdminReportsOverviewDataProps } from "@/types";
-import { ReportsOverviewSkeleton } from "../skeleton/reports-overview-skeleton";
+
+import { AdminReportsOverviewDataProps } from "@/types";
+import { ReportsOverviewSkeleton } from "../../skeleton/reports-overview-skeleton";
+import { ReportsOverview } from "../../components/reports-overview";
 
 
-
-export function AdminReportsOverviewData({ filters }: AdminReportsOverviewDataProps) {
+export function AdminReportsOverviewData({
+  filters,
+}: AdminReportsOverviewDataProps) {
   const { data, isPending, isError, refetch } = useGetAdminReports(filters);
 
   if (isPending) {

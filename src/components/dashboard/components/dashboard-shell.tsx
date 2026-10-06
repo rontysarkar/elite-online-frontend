@@ -9,8 +9,9 @@ import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
 import { DASHBOARD_CONFIG, type DashboardRole } from "@/config/dashboard-nav";
-import { Logo } from "../global/logo";
+
 import { useGetMe } from "@/hooks";
+import { Logo } from "@/components/global/logo";
 
 interface DashboardShellProps {
   children: React.ReactNode;

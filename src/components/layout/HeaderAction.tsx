@@ -47,9 +47,9 @@ export default function HeaderActions() {
       ) : (
 
         <>
-          <Button nativeButton={false} render={<Link href="/profile" />} variant="ghost" className="gap-2">
+          <Button nativeButton={false} render={<Link href="/admin" />} variant="ghost" className="gap-2">
             <User className="h-4 w-4" />
-            Profile
+            Dashboard
           </Button>
           
           <Button variant="destructive" onClick={handleLogout} className="flex items-center gap-2">
