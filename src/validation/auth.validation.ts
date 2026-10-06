@@ -73,3 +73,12 @@ export const resetPasswordSchema = z.object({
     .min(8, "Password must be at least 8 characters"),
 });
 export type ResetPasswordValues = z.infer<typeof resetPasswordSchema>;
+
+
+export const CreatePackageSchema = z.object({
+  name: z.string().trim().min(2, "Full name must be at least 2 characters"),
+  speed: z.string().trim().min(2, "Full name must be at least 2 characters"),
+  price: z.string().min(1, "Price must be at least 100 BDT"),
+});
+
+export type TCreatePackagePayload = z.infer<typeof CreatePackageSchema>;

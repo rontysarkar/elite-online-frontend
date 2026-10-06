@@ -3,6 +3,7 @@ import {
   changeCustomerStatus,
   createCollector,
   createCustomer,
+  createPackage,
   deleteUser,
   getAdminReports,
   getCollectors,
@@ -21,6 +22,7 @@ import { CustomersQuery } from "@/types/customers-types";
 import {
   TConnectionRequestValues,
   TCreateCollectorPayload,
+  TCreatePackagePayload,
 } from "@/validation";
 
 import {
@@ -141,6 +143,17 @@ export function useCreateCustomer() {
     mutationFn: (payload: TConnectionRequestValues) => createCustomer(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["customers"] });
+    },
+  });
+}
+
+
+export function useCreatePackage() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: TCreatePackagePayload) => createPackage(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["packages"] });
     },
   });
 }

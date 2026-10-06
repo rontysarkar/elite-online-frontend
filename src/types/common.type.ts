@@ -31,3 +31,11 @@ export interface PaginationMeta {
   totalPage: number;
 }
 
+export interface IPackage {
+  id: string;
+  name: string;
+  speed: string;
+  price: string;
+  totalCustomers: number;
+}
+
