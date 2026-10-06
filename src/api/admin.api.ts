@@ -1,11 +1,22 @@
 import { apiClient } from "@/lib/api-client";
 import { AdminReportFilters, CustomerStatus, UsersQuery } from "@/types";
 import { CustomersQuery } from "@/types/customers-types";
-import { TConnectionRequestValues } from "@/validation";
+import { TConnectionRequestValues, TCreateCollectorPayload } from "@/validation";
+
+
 
 export function getCollectors() {
   return apiClient("/collectors", { method: "GET" });
 }
+
+
+export function createCollector(payload: TCreateCollectorPayload) {
+  return apiClient(`/collectors`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
 
 export function getAdminReports(filters: AdminReportFilters = {}) {
   const params = new URLSearchParams();
@@ -63,6 +74,8 @@ export function changeCustomerStatus(id: string, status: CustomerStatus) {
   });
 }
 
+
+
 export function getConnectionRequests() {
   return apiClient("/connection-request", { method: "GET" });
 }
@@ -72,3 +85,4 @@ export function acceptConnectionRequest(id: string) {
     method: "POST",
   });
 }
+

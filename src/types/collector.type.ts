@@ -19,3 +19,16 @@ export interface CollectorReportsOverviewDataProps {
 export interface CollectorReportFiltersProps {
   values: CollectorReportFilterValues; 
 }
+
+
+export interface ICollector {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  role: "COLLECTOR";
+  createdAt: string;
+  totalAreas: number;
+  totalCustomers: number;
+  areas: string[];
+}

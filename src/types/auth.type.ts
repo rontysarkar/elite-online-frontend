@@ -11,3 +11,5 @@ export interface IInternetPackage {
   speed: string;
   price: string;
 }
+
+

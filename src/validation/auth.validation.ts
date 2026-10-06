@@ -23,7 +23,7 @@ export const ConnectionRequestSchema = z.object({
     .min(1, "Phone number is required")
     .refine(
       (value) => BD_PHONE_REGEX.test(value.replace(/[\s-]/g, "")),
-      "Enter a valid phone number (e.g. 01700-000001)",
+      "Enter a valid phone number",
     ),
   address: z.string().trim().min(10, "Please enter your full address"),
   areaId: z.string().min(1, "Please select an area"),
@@ -33,7 +33,20 @@ export const ConnectionRequestSchema = z.object({
 export type TConnectionRequestValues = z.infer<typeof ConnectionRequestSchema>;
 
 
+export const CreateCollectorSchema = z.object({
+  name: z.string().trim().min(2, "Full name must be at least 2 characters"),
+  email: z.email("Enter a valid email address"),
+  phone: z
+    .string()
+    .trim()
+    .min(1, "Phone number is required")
+    .refine(
+      (value) => BD_PHONE_REGEX.test(value.replace(/[\s-]/g, "")),
+      "Enter a valid phone number",
+    ),
+});
 
+export type TCreateCollectorPayload = z.infer<typeof CreateCollectorSchema>;
 
 export const forgotPasswordSchema = z.object({
   email: z

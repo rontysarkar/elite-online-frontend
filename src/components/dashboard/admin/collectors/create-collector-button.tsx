@@ -4,27 +4,23 @@ import * as React from "react";
 import { Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { CreateCustomerModal } from "./create-customer-modal";
-import { useGetAreas, useGetPackages } from "@/hooks";
+import { CreateCollectorModal } from "./create-collector-modal";
 
 
-export function CreateCustomerButton() {
+
+export function CreateCollectorButton() {
   const [open, setOpen] = React.useState(false);
-  const {data: areasData} = useGetAreas()
-  const {data: packagesData} = useGetPackages()
 
   return (
     <>
       <Button type="button" className="shrink-0" onClick={() => setOpen(true)}>
         <Plus className="size-4" />
-        Create customer
+        Create Collector
       </Button>
 
-      <CreateCustomerModal
+      <CreateCollectorModal
         open={open}
         onOpenChange={setOpen}
-        areas={areasData || []}
-        packages={packagesData || []}
       />
     </>
   );

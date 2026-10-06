@@ -1,6 +1,7 @@
 import {
   acceptConnectionRequest,
   changeCustomerStatus,
+  createCollector,
   createCustomer,
   deleteUser,
   getAdminReports,
@@ -17,7 +18,10 @@ import {
   UsersQuery,
 } from "@/types";
 import { CustomersQuery } from "@/types/customers-types";
-import { TConnectionRequestValues } from "@/validation";
+import {
+  TConnectionRequestValues,
+  TCreateCollectorPayload,
+} from "@/validation";
 
 import {
   keepPreviousData,
@@ -32,6 +36,16 @@ export function useGetCollectors() {
     queryFn: async () => {
       const res = await getCollectors();
       return res.data;
+    },
+  });
+}
+
+export function useCreateCollector() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: TCreateCollectorPayload) => createCollector(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["collectors"] });
     },
   });
 }
@@ -120,7 +134,6 @@ export function useAcceptConnectionRequest() {
     },
   });
 }
-
 
 export function useCreateCustomer() {
   const queryClient = useQueryClient();
