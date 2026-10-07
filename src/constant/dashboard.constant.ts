@@ -1,4 +1,5 @@
 import { UserRole } from "@/types";
+import { FilterItem } from "@/types/customers-types";
 
 export const ALL = "all";
 export const LIMIT = 10;
@@ -48,4 +49,11 @@ export const ROLE_ITEMS = [
   { value: "ADMIN", label: "Admin" },
   { value: "COLLECTOR", label: "Collector" },
   { value: "CUSTOMER", label: "Customer" },
+];
+
+
+export const STATUS_ITEMS: FilterItem[] = [
+  { value: ALL, label: "All status" },
+  { value: "ACTIVE", label: "Active" },
+  { value: "INACTIVE", label: "Inactive" },
 ];

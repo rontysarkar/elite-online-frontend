@@ -6,11 +6,11 @@ import {
   createCustomer,
   createPackage,
   deleteUser,
+  getAdminCustomers,
   getAdminReports,
   getCollectors,
   getConnectionRequests,
   getCustomerById,
-  getCustomers,
   getUsers,
 } from "@/api/admin.api";
 import {
@@ -85,14 +85,14 @@ export function useDeleteUser() {
   });
 }
 
-export function useGetCustomers(filters: CustomersQuery) {
+export function useGetAdminCustomers(filters: CustomersQuery) {
   return useQuery({
     queryKey: ["customers", filters],
     queryFn: async () => {
-      const res = await getCustomers(filters);
+      const res = await getAdminCustomers(filters);
       return { ...res.data, meta: res.meta };
     },
-    placeholderData: keepPreviousData,
+    // placeholderData: keepPreviousData,
   });
 }
 

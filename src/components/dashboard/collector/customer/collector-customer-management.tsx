@@ -1,42 +1,36 @@
 "use client";
+
 import * as React from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Power, Search, UserCheck, Users, UserX, X } from "lucide-react";
+import { Search, UserCheck, Users, UserX, X } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-
-import { CustomerDetailsModal } from "./customer-details-modal";
-import { CustomerStatusBadge } from "./customer-status-badge";
 import { ALL, LIMIT, STATUS_ITEMS } from "@/constant";
-import { CollectorOption } from "@/types";
 import { Skeleton } from "../../skeleton/skeleton";
 import { Pagination } from "../../components/pagination";
 import {
-  useChangeCustomerStatus,
-  useGetAdminCustomers,
   useGetAreas,
-  useGetCollectors,
+  useGetCollectorCustomers,
 } from "@/hooks";
 import { getInitials } from "@/helper";
-import { toast } from "@/components/ui/toast";
 import { StatCard } from "../../components/stat-card";
-import { AreaOption, CustomersUrlParams, FilterItem, ICustomerResponse } from "@/types/customers-types";
+import {
+  AreaOption,
+  CollectorCustomersUrlParams,
+  FilterItem,
+  ICustomerResponse,
+} from "@/types/customers-types";
+import { CustomerStatusBadge } from "../../admin/customers/customer-status-badge";
+import { CustomerDetailsModal } from "../../admin/customers/customer-details-modal";
 import { FilterSelect } from "../../components/filter-select";
 
-
-
-export function CustomersManagement({
+export function CollectorCustomersManagement({
   params,
 }: {
-  params: CustomersUrlParams;
+  params: CollectorCustomersUrlParams;
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -44,34 +38,28 @@ export function CustomersManagement({
 
   const page = Math.max(Number(params.page) || 1, 1);
   const [searchInput, setSearchInput] = React.useState(params.searchTerm ?? "");
-  const [customerToUpdate, setCustomerToUpdate] =
-    React.useState<ICustomerResponse | null>(null);
   const [selectedCustomerId, setSelectedCustomerId] = React.useState<
     string | null
   >(null);
 
-  const { data, isPending, isFetching, isError, refetch } = useGetAdminCustomers({
-    page,
-    limit: LIMIT,
-    searchTerm: params.searchTerm,
-    collectorId: params.collectorId,
-    areaId: params.areaId,
-    status: params.status,
-  });
+  const { data, isPending, isFetching, isError, refetch } =
+    useGetCollectorCustomers({
+      page,
+      limit: LIMIT,
+      searchTerm: params.searchTerm,
+      areaId: params.areaId,
+      status: params.status,
+    });
 
   const { data: areasData } = useGetAreas();
-  const { data: collectorsData } = useGetCollectors();
-  const collectors: CollectorOption[] =
-    collectorsData?.map((c: any) => ({ id: c.id, name: c.name })) ?? [];
   const areas: AreaOption[] =
-    areasData?.map((a: any) => ({ id: a.id, name: a.name })) ?? [];
+    areasData?.map((a: AreaOption) => ({ id: a.id, name: a.name })) ?? [];
 
   const updateParams = React.useCallback(
-    (patch: Partial<CustomersUrlParams>) => {
-      const next: CustomersUrlParams = {
+    (patch: Partial<CollectorCustomersUrlParams>) => {
+      const next: CollectorCustomersUrlParams = {
         page: undefined,
         searchTerm: params.searchTerm,
-        collectorId: params.collectorId,
         areaId: params.areaId,
         status: params.status,
         ...patch,
@@ -91,14 +79,7 @@ export function CustomersManagement({
         });
       });
     },
-    [
-      params.searchTerm,
-      params.collectorId,
-      params.areaId,
-      params.status,
-      pathname,
-      router,
-    ],
+    [params.searchTerm, params.areaId, params.status, pathname, router],
   );
 
   React.useEffect(() => {
@@ -111,42 +92,6 @@ export function CustomersManagement({
     return () => clearTimeout(timer);
   }, [searchInput, params.searchTerm, updateParams]);
 
-  const { mutate: changeCustomerStatus, isPending: isUpdating } =
-    useChangeCustomerStatus();
-
-  async function handleConfirmStatusChange() {
-    if (!customerToUpdate) return;
-    const nextStatus =
-      customerToUpdate.status === "ACTIVE" ? "INACTIVE" : "ACTIVE";
-
-    changeCustomerStatus(
-      { id: customerToUpdate.id, status: nextStatus },
-      {
-        onSuccess: () => {
-          toast.add({
-            title: "Customer status changed successfully",
-            description: "The customer status has been changed successfully.",
-            type: "success",
-          });
-          setCustomerToUpdate(null);
-        },
-        onError: (err) => {
-          toast.add({
-            title: "Couldn't change customer status",
-            description: "Something went wrong. Please try again.",
-            type: "error",
-          });
-          setCustomerToUpdate(null);
-        },
-      },
-    );
-  }
-
-  const collectorItems: FilterItem[] = [
-    { value: ALL, label: "All collectors" },
-    ...collectors.map((c) => ({ value: c.id, label: c.name })),
-  ];
-
   const areaItems: FilterItem[] = [
     { value: ALL, label: "All areas" },
     ...areas.map((a) => ({ value: a.id, label: a.name })),
@@ -155,9 +100,8 @@ export function CustomersManagement({
   const customers = data?.customers ?? [];
   const meta = data?.meta;
   const hasFilters = Boolean(
-    params.searchTerm || params.collectorId || params.areaId || params.status,
+    params.searchTerm || params.areaId || params.status,
   );
-  const isDeactivating = customerToUpdate?.status === "ACTIVE";
 
   return (
     <div className="space-y-6">
@@ -206,15 +150,6 @@ export function CustomersManagement({
 
           <div className="grid gap-3 sm:grid-cols-2 lg:flex lg:items-center">
             <FilterSelect
-              label="Filter by collector"
-              value={params.collectorId ?? ALL}
-              items={collectorItems}
-              onChange={(value) =>
-                updateParams({ collectorId: value === ALL ? undefined : value })
-              }
-              className="lg:w-52"
-            />
-            <FilterSelect
               label="Filter by area"
               value={params.areaId ?? ALL}
               items={areaItems}
@@ -242,7 +177,6 @@ export function CustomersManagement({
                   setSearchInput("");
                   updateParams({
                     searchTerm: undefined,
-                    collectorId: undefined,
                     areaId: undefined,
                     status: undefined,
                   });
@@ -265,10 +199,11 @@ export function CustomersManagement({
             <thead className="bg-muted/50">
               <tr className="text-left text-xs font-semibold tracking-wide text-muted-foreground uppercase">
                 <th className="px-4 py-3">Name</th>
-                <th className="px-4 py-3">Area</th>
                 <th className="px-4 py-3">Package</th>
+                <th className="px-4 py-3">Area</th>
+                <th className="px-4 py-3">Address</th>
                 <th className="px-4 py-3">Status</th>
-                <th className="px-4 py-3 text-right">Action</th>
+                <th className="px-4 py-3 text-right">Due Bills</th>
               </tr>
             </thead>
 
@@ -296,6 +231,9 @@ export function CustomersManagement({
                     </td>
                     <td className="px-4 py-3">
                       <Skeleton className="ml-auto h-8 w-24" />
+                    </td>
+                    <td className="px-4 py-3">
+                      <Skeleton className="h-6 w-6 rounded-full" />
                     </td>
                   </tr>
                 ))}
@@ -328,10 +266,6 @@ export function CustomersManagement({
                         </div>
                       </td>
 
-                      <td className="px-4 py-3 text-foreground">
-                        {customer.area?.name ?? "—"}
-                      </td>
-
                       <td className="px-4 py-3">
                         {customer.package ? (
                           <div>
@@ -348,28 +282,28 @@ export function CustomersManagement({
                         )}
                       </td>
 
+                      <td className="px-4 py-3 text-foreground">
+                        {customer.area?.name ?? "—"}
+                      </td>
+
+                      <td className="px-4 py-3 text-foreground">
+                        {customer.address ?? "—"}
+                      </td>
+
                       <td className="px-4 py-3">
                         <CustomerStatusBadge status={customer.status} />
                       </td>
 
                       <td className="px-4 py-3 text-right">
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className={cn(
-                            active
-                              ? "text-destructive hover:bg-destructive/10 hover:text-destructive"
-                              : "text-primary hover:bg-primary/10 hover:text-primary",
-                          )}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setCustomerToUpdate(customer);
-                          }}
+                        <span
+                          className={`inline-flex min-w-8 items-center justify-center rounded-full px-2.5 py-1 text-sm font-bold ${
+                            customer._count.bill > 0
+                              ? "bg-red-50 text-red-600"
+                              : "bg-slate-100 text-slate-500"
+                          }`}
                         >
-                          <Power className="size-4" />
-                          {active ? "Deactivate" : "Activate"}
-                        </Button>
+                          {customer._count.bill}
+                        </span>
                       </td>
                     </tr>
                   );
@@ -417,50 +351,6 @@ export function CustomersManagement({
           />
         )}
       </section>
-
-      <Dialog
-        open={Boolean(customerToUpdate)}
-        onOpenChange={(open) => {
-          if (!open) setCustomerToUpdate(null);
-        }}
-      >
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader className="text-left">
-            <DialogTitle className="text-xl font-bold">
-              {isDeactivating ? "Deactivate customer?" : "Activate customer?"}
-            </DialogTitle>
-            <DialogDescription>
-              <span className="font-semibold text-foreground">
-                {customerToUpdate?.name}
-              </span>{" "}
-              {isDeactivating
-                ? "will be marked as inactive."
-                : "will be marked as active again."}
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="flex justify-end gap-2">
-            <Button
-              variant="outline"
-              disabled={isUpdating}
-              onClick={() => setCustomerToUpdate(null)}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant={isDeactivating ? "destructive" : "default"}
-              disabled={isUpdating}
-              onClick={handleConfirmStatusChange}
-            >
-              {isUpdating
-                ? "Saving..."
-                : isDeactivating
-                  ? "Deactivate"
-                  : "Activate"}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
 
       <CustomerDetailsModal
         customerId={selectedCustomerId}

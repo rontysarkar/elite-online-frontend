@@ -54,7 +54,7 @@ export function createCustomer(payload: TConnectionRequestValues) {
   });
 }
 
-export function getCustomers(filters: CustomersQuery) {
+export function getAdminCustomers(filters: CustomersQuery) {
   const params = new URLSearchParams();
 
   Object.entries(filters).forEach(([key, value]) => {
@@ -63,6 +63,8 @@ export function getCustomers(filters: CustomersQuery) {
 
   return apiClient(`/customers?${params.toString()}`, { method: "GET" });
 }
+
+
 
 export function getCustomerById(id: string) {
   return apiClient(`/customers/${id}`, { method: "GET" });

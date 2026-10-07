@@ -1,3 +1,5 @@
+import { ALL } from "@/constant";
+
 export type CustomerStatus = "ACTIVE" | "INACTIVE";
 
 export interface ICustomerResponse {
@@ -23,6 +25,9 @@ export interface ICustomerResponse {
     speed: string;
     price: string;
   };
+  _count:{
+    bill: number;
+  }
 }
 
 export interface CustomersReport {
@@ -58,3 +63,26 @@ export interface PackageOption {
   speed: string;
   price: string;
 }
+
+
+export interface CustomersUrlParams {
+  page?: string;
+  searchTerm?: string;
+  collectorId?: string;
+  areaId?: string;
+  status?: string;
+}
+
+export interface CollectorCustomersUrlParams {
+  page?: string;
+  searchTerm?: string;
+  areaId?: string;
+  status?: string;
+}
+
+export interface FilterItem {
+  value: string;
+  label: string;
+}
+
+

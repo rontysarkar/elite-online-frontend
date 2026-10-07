@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 import { CollectorDashboardPageProps } from "@/types";
-import { CollectorReportFilters } from "@/components/dashboard/collector/collector-reports-filters";
-import { CollectorReportsOverviewData } from "@/components/dashboard/collector/collector-reports-verview-data";
+import { CollectorReportFilters } from "@/components/dashboard/collector/reports/collector-reports-filters";
+import { CollectorReportsOverviewData } from "@/components/dashboard/collector/reports/collector-reports-verview-data";
 
 export const metadata: Metadata = {
   title: "Collector Dashboard",
