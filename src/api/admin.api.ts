@@ -1,7 +1,7 @@
 import { apiClient } from "@/lib/api-client";
 import { AdminReportFilters, CustomerStatus, UsersQuery } from "@/types";
 import { CustomersQuery } from "@/types/customers-types";
-import { TConnectionRequestValues, TCreateCollectorPayload, TCreatePackagePayload } from "@/validation";
+import { TConnectionRequestValues, TCreateAreaPayload, TCreateCollectorPayload, TCreatePackagePayload } from "@/validation";
 
 
 
@@ -94,6 +94,14 @@ export function createPackage(payload: TCreatePackagePayload) {
     body: JSON.stringify(payload),
   });
 } 
+
+
+export function createArea(payload: TCreateAreaPayload) {
+  return apiClient(`/areas`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
 
 
 

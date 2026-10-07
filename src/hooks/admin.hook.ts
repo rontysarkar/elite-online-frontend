@@ -1,6 +1,7 @@
 import {
   acceptConnectionRequest,
   changeCustomerStatus,
+  createArea,
   createCollector,
   createCustomer,
   createPackage,
@@ -21,6 +22,7 @@ import {
 import { CustomersQuery } from "@/types/customers-types";
 import {
   TConnectionRequestValues,
+  TCreateAreaPayload,
   TCreateCollectorPayload,
   TCreatePackagePayload,
 } from "@/validation";
@@ -154,6 +156,17 @@ export function useCreatePackage() {
     mutationFn: (payload: TCreatePackagePayload) => createPackage(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["packages"] });
+    },
+  });
+}
+
+
+export function useCreateArea() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: TCreateAreaPayload) => createArea(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["areas"] });
     },
   });
 }

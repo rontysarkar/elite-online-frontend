@@ -1,28 +1,30 @@
 
+import { AreasManagement } from "@/components/dashboard/admin/areas/areas-management";
+import { CreateAreaButton } from "@/components/dashboard/admin/areas/create-area-button";
 import { CreatePackageButton } from "@/components/dashboard/admin/packages/create-package-button";
 import { PackagesManagement } from "@/components/dashboard/admin/packages/packages-management";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Packages",
+  title: "Areas",
 };
 
-export default function AdminPackagesPage() {
+export default function AdminAreasPage() {
   return (
     <div className="space-y-6">
       <div className="space-y-1 flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-foreground">
-            Packages
+            Areas
           </h1>
           <p className="text-sm text-muted-foreground">
-            Manage your packages, their areas and customers.
+            Manage your areas..
           </p>
         </div>
-        <CreatePackageButton />
+        <CreateAreaButton/>
       </div>
 
-      <PackagesManagement />
+      <AreasManagement />
     </div>
   );
 }

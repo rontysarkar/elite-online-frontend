@@ -82,3 +82,11 @@ export const CreatePackageSchema = z.object({
 });
 
 export type TCreatePackagePayload = z.infer<typeof CreatePackageSchema>;
+
+
+export const CreateAreaSchema = z.object({
+  name: z.string().trim().min(2, "Full name must be at least 2 characters"),
+  collectorId: z.string().min(1, "Please select a collector"),
+});
+
+export type TCreateAreaPayload = z.infer<typeof CreateAreaSchema>;
