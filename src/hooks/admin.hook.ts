@@ -92,7 +92,7 @@ export function useGetAdminCustomers(filters: CustomersQuery) {
       const res = await getAdminCustomers(filters);
       return { ...res.data, meta: res.meta };
     },
-    // placeholderData: keepPreviousData,
+
   });
 }
 
@@ -103,7 +103,7 @@ export function useGetCustomerById(id: string) {
       const res = await getCustomerById(id);
       return res.data;
     },
-    placeholderData: null,
+    enabled: !!id,
   });
 }
 

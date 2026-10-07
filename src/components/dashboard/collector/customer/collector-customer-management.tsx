@@ -11,10 +11,7 @@ import { cn } from "@/lib/utils";
 import { ALL, LIMIT, STATUS_ITEMS } from "@/constant";
 import { Skeleton } from "../../skeleton/skeleton";
 import { Pagination } from "../../components/pagination";
-import {
-  useGetAreas,
-  useGetCollectorCustomers,
-} from "@/hooks";
+import {  useGetCollectorAreas, useGetCollectorCustomers } from "@/hooks";
 import { getInitials } from "@/helper";
 import { StatCard } from "../../components/stat-card";
 import {
@@ -24,7 +21,7 @@ import {
   ICustomerResponse,
 } from "@/types/customers-types";
 import { CustomerStatusBadge } from "../../admin/customers/customer-status-badge";
-import { CustomerDetailsModal } from "../../admin/customers/customer-details-modal";
+import { CustomerDetailsModal } from "../../components/customer-details-modal";
 import { FilterSelect } from "../../components/filter-select";
 
 export function CollectorCustomersManagement({
@@ -51,7 +48,7 @@ export function CollectorCustomersManagement({
       status: params.status,
     });
 
-  const { data: areasData } = useGetAreas();
+  const { data: areasData } = useGetCollectorAreas();
   const areas: AreaOption[] =
     areasData?.map((a: AreaOption) => ({ id: a.id, name: a.name })) ?? [];
 

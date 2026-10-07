@@ -14,7 +14,8 @@ import { formatDate, getInitials } from "@/helper";
 
 import { EmailVerifiedBadge } from "./email-verified-badge";
 import { ConnectionRequestResponse } from "@/types";
-import { InfoCard } from "./info-card";
+import { InfoCard } from "../../components/info-card";
+
 
 
 

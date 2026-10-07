@@ -86,3 +86,39 @@ export interface FilterItem {
 }
 
 
+
+export type BillStatus = "PAID" | "UNPAID" | "OVERDUE";
+
+export interface CustomerBill {
+  id: string;
+  month: number;
+  year: number;
+  amount: string;
+  status: BillStatus;
+}
+
+export interface CustomerDetails {
+  id: string;
+  name: string;
+  address: string;
+  status: "ACTIVE" | "INACTIVE";
+  createdAt: string;
+  user: {
+    name: string;
+    email: string;
+    phone: string;
+  };
+  area: {
+    name: string;
+    collector: {
+      name: string;
+    } | null;
+  };
+  package: {
+    name: string;
+    speed: string;
+  };
+  bill: CustomerBill[];
+}
+
+

@@ -26,3 +26,18 @@ export function getCollectorCustomers(filters: CustomersQuery) {
 
   return apiClient(`/customers/my-customers?${params.toString()}`, { method: "GET" });
 }
+
+
+export function paymentByCollector(billId:string) {
+  return apiClient(`/payments/collector`, {
+    method: "POST",
+    body: JSON.stringify({ billId }),
+  });
+}
+
+
+export function getCollectorAreas() {
+  return apiClient(`/areas/my-area`, {
+    method: "GET",
+  });
+} 

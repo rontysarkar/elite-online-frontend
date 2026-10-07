@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
-import { CustomerDetailsModal } from "./customer-details-modal";
+import { CustomerDetailsModal } from "../../components/customer-details-modal";
 import { CustomerStatusBadge } from "./customer-status-badge";
 import { ALL, LIMIT, STATUS_ITEMS } from "@/constant";
 import { CollectorOption } from "@/types";
@@ -28,10 +28,13 @@ import {
 import { getInitials } from "@/helper";
 import { toast } from "@/components/ui/toast";
 import { StatCard } from "../../components/stat-card";
-import { AreaOption, CustomersUrlParams, FilterItem, ICustomerResponse } from "@/types/customers-types";
+import {
+  AreaOption,
+  CustomersUrlParams,
+  FilterItem,
+  ICustomerResponse,
+} from "@/types/customers-types";
 import { FilterSelect } from "../../components/filter-select";
-
-
 
 export function CustomersManagement({
   params,
@@ -50,14 +53,15 @@ export function CustomersManagement({
     string | null
   >(null);
 
-  const { data, isPending, isFetching, isError, refetch } = useGetAdminCustomers({
-    page,
-    limit: LIMIT,
-    searchTerm: params.searchTerm,
-    collectorId: params.collectorId,
-    areaId: params.areaId,
-    status: params.status,
-  });
+  const { data, isPending, isFetching, isError, refetch } =
+    useGetAdminCustomers({
+      page,
+      limit: LIMIT,
+      searchTerm: params.searchTerm,
+      collectorId: params.collectorId,
+      areaId: params.areaId,
+      status: params.status,
+    });
 
   const { data: areasData } = useGetAreas();
   const { data: collectorsData } = useGetCollectors();

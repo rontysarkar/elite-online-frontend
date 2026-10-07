@@ -1,9 +1,12 @@
 import { apiClient } from "@/lib/api-client";
 import { AdminReportFilters, CustomerStatus, UsersQuery } from "@/types";
 import { CustomersQuery } from "@/types/customers-types";
-import { TConnectionRequestValues, TCreateAreaPayload, TCreateCollectorPayload, TCreatePackagePayload } from "@/validation";
-
-
+import {
+  TConnectionRequestValues,
+  TCreateAreaPayload,
+  TCreateCollectorPayload,
+  TCreatePackagePayload,
+} from "@/validation";
 
 export function getAdminReports(filters: AdminReportFilters = {}) {
   const params = new URLSearchParams();
@@ -19,12 +22,9 @@ export function getAdminReports(filters: AdminReportFilters = {}) {
   });
 }
 
-
-
 export function getCollectors() {
   return apiClient("/collectors", { method: "GET" });
 }
-
 
 export function createCollector(payload: TCreateCollectorPayload) {
   return apiClient(`/collectors`, {
@@ -64,9 +64,8 @@ export function getAdminCustomers(filters: CustomersQuery) {
   return apiClient(`/customers?${params.toString()}`, { method: "GET" });
 }
 
-
-
 export function getCustomerById(id: string) {
+  console.log(id);
   return apiClient(`/customers/${id}`, { method: "GET" });
 }
 
@@ -76,8 +75,6 @@ export function changeCustomerStatus(id: string, status: CustomerStatus) {
     body: JSON.stringify({ status }),
   });
 }
-
-
 
 export function getConnectionRequests() {
   return apiClient("/connection-request", { method: "GET" });
@@ -89,14 +86,12 @@ export function acceptConnectionRequest(id: string) {
   });
 }
 
-
 export function createPackage(payload: TCreatePackagePayload) {
   return apiClient(`/packages`, {
     method: "POST",
     body: JSON.stringify(payload),
   });
-} 
-
+}
 
 export function createArea(payload: TCreateAreaPayload) {
   return apiClient(`/areas`, {
@@ -104,6 +99,3 @@ export function createArea(payload: TCreateAreaPayload) {
     body: JSON.stringify(payload),
   });
 }
-
-
-

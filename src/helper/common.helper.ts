@@ -39,6 +39,10 @@ export function formatDate(value: string) {
   });
 }
 
+export function formatAmount(amount: string | number) {
+  return `৳${Number(amount).toLocaleString("en-BD")}`;
+}
+
 // export function getInitials(name: string) {
 //   return name
 //     .split(" ")
