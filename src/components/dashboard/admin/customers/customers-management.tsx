@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 
 import { CustomerDetailsModal } from "../../components/customer-details-modal";
 import { CustomerStatusBadge } from "./customer-status-badge";
-import { ALL, LIMIT, STATUS_ITEMS } from "@/constant";
+import { ALL, CUSTOMER_STATUS_ITEMS, LIMIT, } from "@/constant";
 import { CollectorOption } from "@/types";
 import { Skeleton } from "../../skeleton/skeleton";
 import { Pagination } from "../../components/pagination";
@@ -230,7 +230,7 @@ export function CustomersManagement({
             <FilterSelect
               label="Filter by status"
               value={params.status ?? ALL}
-              items={STATUS_ITEMS}
+              items={CUSTOMER_STATUS_ITEMS}
               onChange={(value) =>
                 updateParams({ status: value === ALL ? undefined : value })
               }
