@@ -15,7 +15,7 @@ import { getErrorMessage } from "@/helper";
 // TODO: Collector ar customer er real demo email/password boshao.
 const QUICK_LOGINS = [
   { label: "Admin", icon: ShieldCheck, email: "admin@gmail.com", password: "12345678" },
-  { label: "Collector", icon: Wallet, email: "rabby@gmail.com", password: "12345678" },
+  { label: "Collector", icon: Wallet, email: "habibur@gmail.com", password: "12345678" },
   { label: "Customer", icon: User, email: "fahim@gmail.com", password: "12345678" },
 ];
 
