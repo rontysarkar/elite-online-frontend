@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { ALL, LIMIT, STATUS_ITEMS } from "@/constant";
+import { ALL, CUSTOMER_STATUS_ITEMS, LIMIT } from "@/constant";
 import { Skeleton } from "../../skeleton/skeleton";
 import { Pagination } from "../../components/pagination";
 import {  useGetCollectorAreas, useGetCollectorCustomers } from "@/hooks";
@@ -158,7 +158,7 @@ export function CollectorCustomersManagement({
             <FilterSelect
               label="Filter by status"
               value={params.status ?? ALL}
-              items={STATUS_ITEMS}
+              items={CUSTOMER_STATUS_ITEMS}
               onChange={(value) =>
                 updateParams({ status: value === ALL ? undefined : value })
               }
@@ -238,7 +238,6 @@ export function CollectorCustomersManagement({
               {!isPending &&
                 !isError &&
                 customers.map((customer: ICustomerResponse) => {
-                  const active = customer.status === "ACTIVE";
 
                   return (
                     <tr

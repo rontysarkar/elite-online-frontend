@@ -1,5 +1,5 @@
 import { apiClient } from "@/lib/api-client";
-import { CollectorReportFilterValues } from "@/types";
+import { BillsQuery, CollectorReportFilterValues } from "@/types";
 import { CustomersQuery } from "@/types/customers-types";
 
 
@@ -41,3 +41,13 @@ export function getCollectorAreas() {
     method: "GET",
   });
 } 
+
+
+
+export function getCollectorBills(filters: BillsQuery) {
+  const params = new URLSearchParams();
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value) params.set(key, String(value));
+  });
+  return apiClient(`/bills/collector/bills?${params.toString()}`, { method: "GET" });
+}

@@ -5,30 +5,9 @@ import { MONTH_NAMES } from "@/constant";
 import { formatAmount } from "@/helper";
 import type { BillStatus, CustomerBill } from "@/types/customers-types";
 import { cn } from "@/utils/cn";
+import { BILL_STATUS_STYLES } from "@/style/dashboard.style";
 
-const BILL_STATUS_STYLES: Record<
-  BillStatus,
-  { label: string; badge: string; border: string; dot: string }
-> = {
-  PAID: {
-    label: "Paid",
-    badge: "bg-primary/10 text-primary",
-    border: "border-l-primary",
-    dot: "bg-primary",
-  },
-  UNPAID: {
-    label: "Unpaid",
-    badge: "bg-secondary/10 text-secondary",
-    border: "border-l-secondary",
-    dot: "bg-secondary",
-  },
-  OVERDUE: {
-    label: "Overdue",
-    badge: "bg-destructive/10 text-destructive",
-    border: "border-l-destructive",
-    dot: "bg-destructive",
-  },
-};
+
 
 interface BillRowProps {
   bill: CustomerBill;

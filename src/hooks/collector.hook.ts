@@ -1,7 +1,13 @@
-import { getCollectorAreas, getCollectorCustomers, getCollectorReports, paymentByCollector } from "@/api/collector.api";
-import { CollectorReportFilterValues, IApiResponse } from "@/types";
+import {
+  getCollectorAreas,
+  getCollectorBills,
+  getCollectorCustomers,
+  getCollectorReports,
+  paymentByCollector,
+} from "@/api/collector.api";
+import { BillsQuery, CollectorReportFilterValues, IApiResponse } from "@/types";
 import { CustomersQuery } from "@/types/customers-types";
-import {  useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useGetCollectorReports(filters: CollectorReportFilterValues) {
   return useQuery({
@@ -13,7 +19,6 @@ export function useGetCollectorReports(filters: CollectorReportFilterValues) {
   });
 }
 
-
 export function useGetCollectorCustomers(filters: CustomersQuery) {
   return useQuery({
     queryKey: ["collector-customers", filters],
@@ -24,25 +29,34 @@ export function useGetCollectorCustomers(filters: CustomersQuery) {
   });
 }
 
+export function useGetCollectorAreas() {
+  return useQuery({
+    queryKey: ["collector-areas"],
+    queryFn: async () => {
+      const res = await getCollectorAreas();
+      return res.data;
+    },
+  });
+}
 
-export function usePaymentByCollector(){
+export function useGetCollectorBills(filters: BillsQuery) {
+  return useQuery({
+    queryKey: ["collector-bills", filters],
+    queryFn: async () => {
+      const res = await getCollectorBills(filters);
+      return { bills: res.data, meta: res.meta };
+    },
+  });
+}
+
+export function usePaymentByCollector() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ billId }: { billId: string }) => paymentByCollector(billId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["collector-customers"] });
       queryClient.invalidateQueries({ queryKey: ["collector-reports"] });
-    },
-  });
-}
-
-
-export function useGetCollectorAreas() {
-  return useQuery({
-    queryKey: ["collector-areas"],
-    queryFn: async() => {
-      const res = await getCollectorAreas();
-      return res.data;
+      queryClient.invalidateQueries({ queryKey: ["collector-bills"] });
     },
   });
 }

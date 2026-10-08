@@ -42,8 +42,8 @@ export const DASHBOARD_CONFIG: Record<DashboardRole, DashboardConfig> = {
     label: "Collector Panel",
     nav: [
       { title: "Dashboard", href: "/collector", icon: LayoutDashboard },
-      { title: "Collections", href: "/collector/collections", icon: Wallet },
       { title: "Customers", href: "/collector/customers", icon: Users },
+      { title: "Bills", href: "/collector/bills", icon: Receipt },
     ],
   },
   customer: {

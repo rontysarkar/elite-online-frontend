@@ -65,8 +65,16 @@ export const ROLE_ITEMS = [
 ];
 
 
-export const STATUS_ITEMS: FilterItem[] = [
+export const CUSTOMER_STATUS_ITEMS: FilterItem[] = [
   { value: ALL, label: "All status" },
   { value: "ACTIVE", label: "Active" },
   { value: "INACTIVE", label: "Inactive" },
+];
+
+
+export const BILL_STATUS_ITEMS: FilterItem[] = [
+  { value: ALL, label: "All status" },
+  { value: "PAID", label: "Paid" },
+  { value: "UNPAID", label: "Unpaid" },
+  { value: "OVERDUE", label: "Overdue" },
 ];
