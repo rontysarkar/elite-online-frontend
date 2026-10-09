@@ -1,37 +1,28 @@
-"use client"
+"use client";
 
-import { Check } from "lucide-react"
+import { Check } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
-} from "@/components/ui/card"
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs"
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const homePlans = [
   {
-    name: "Starter",
+    name: "Basic",
     price: "500",
     speed: "10 Mbps",
-    features: [
-      "Unlimited Data",
-      "Free Installation",
-      "24/7 Support",
-    ],
+    features: ["Unlimited Data", "Free Installation", "24/7 Support"],
   },
   {
-    name: "Popular",
-    price: "800",
-    speed: "20 Mbps",
+    name: "Standard",
+    price: "700",
+    speed: "30 Mbps",
     popular: true,
     features: [
       "Unlimited Data",
@@ -41,8 +32,8 @@ const homePlans = [
     ],
   },
   {
-    name: "Pro",
-    price: "1200",
+    name: "Premium",
+    price: "1000",
     speed: "50 Mbps",
     features: [
       "Unlimited Data",
@@ -55,24 +46,16 @@ const homePlans = [
     name: "Ultimate",
     price: "2000",
     speed: "100 Mbps",
-    features: [
-      "All Pro features",
-      "Business SLA",
-      "Dedicated Manager",
-    ],
+    features: ["All Pro features", "Business SLA", "Dedicated Manager"],
   },
-]
+];
 
 const businessPlans = [
   {
     name: "Business Basic",
     price: "1500",
     speed: "50 Mbps",
-    features: [
-      "Unlimited Data",
-      "Priority Support",
-      "Free Installation",
-    ],
+    features: ["Unlimited Data", "Priority Support", "Free Installation"],
   },
   {
     name: "Business Pro",
@@ -107,16 +90,12 @@ const businessPlans = [
       "Dedicated Manager",
     ],
   },
-]
+];
 
 export function Packages() {
   return (
-    <section
-      id="packages"
-      className="bg-background py-16 md:py-20"
-    >
+    <section id="packages" className="bg-background py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        
         <div className="mb-10 text-center">
           <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
             Choose Your Perfect Plan
@@ -127,11 +106,8 @@ export function Packages() {
           </p>
         </div>
 
-        <Tabs
-          defaultValue="home"
-          className="w-full flex flex-col "
-        >
-          <div className="mb-10 flex  justify-center">
+        <Tabs defaultValue="home" className="w-full flex flex-col ">
+          {/* <div className="mb-10 flex  justify-center">
             <TabsList>
               <TabsTrigger value="home">
                 Home
@@ -141,7 +117,7 @@ export function Packages() {
                 Business
               </TabsTrigger>
             </TabsList>
-          </div>
+          </div> */}
 
           <TabsContent value="home">
             <PlanGrid plans={homePlans} />
@@ -153,14 +129,10 @@ export function Packages() {
         </Tabs>
       </div>
     </section>
-  )
+  );
 }
 
-function PlanGrid({
-  plans,
-}: {
-  plans: typeof homePlans
-}) {
+function PlanGrid({ plans }: { plans: typeof homePlans }) {
   return (
     <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
       {plans.map((plan) => (
@@ -185,7 +157,6 @@ function PlanGrid({
 
             <div className="mt-2 text-4xl font-bold">
               ৳{plan.price}
-
               <span className="text-sm font-normal text-muted-foreground">
                 /month
               </span>
@@ -199,10 +170,7 @@ function PlanGrid({
 
             <ul className="space-y-3">
               {plan.features.map((feature) => (
-                <li
-                  key={feature}
-                  className="flex items-start gap-2 text-sm"
-                >
+                <li key={feature} className="flex items-start gap-2 text-sm">
                   <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
 
                   <span>{feature}</span>
@@ -212,12 +180,10 @@ function PlanGrid({
           </CardContent>
 
           <CardFooter>
-            <Button className="w-full">
-              Get Started
-            </Button>
+            <Button className="w-full">Get Started</Button>
           </CardFooter>
         </Card>
       ))}
     </div>
-  )
+  );
 }

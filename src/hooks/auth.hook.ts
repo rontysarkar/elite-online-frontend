@@ -1,4 +1,5 @@
 import {
+  changePassword,
   forgotPassword,
   getMe,
   resendEmailVerify,
@@ -25,7 +26,10 @@ export function useLogout() {
 export function useGetMe() {
   return useQuery({
     queryKey: ["user"],
-    queryFn: getMe,
+    queryFn: async () =>{
+      const res = await getMe();
+      return res.data;
+    },
     retry: false,
   });
 }
@@ -59,3 +63,10 @@ export function useResetPassword() {
     mutationFn: resetPassword,
   });
 }   
+
+
+export function useChangePassword() {
+  return useMutation({
+    mutationFn: changePassword,
+  });
+}

@@ -29,6 +29,7 @@ export const DASHBOARD_CONFIG: Record<DashboardRole, DashboardConfig> = {
   admin: {
     label: "Admin Panel",
     nav: [
+      {title:"Profile", href: "/admin/profile", icon: UserCog},
       { title: "Dashboard", href: "/admin", icon: LayoutDashboard },
       { title:"Users", href: "/admin/users", icon: UserCog },
       { title: "Customers", href: "/admin/customers", icon: Users },
@@ -41,6 +42,7 @@ export const DASHBOARD_CONFIG: Record<DashboardRole, DashboardConfig> = {
   collector: {
     label: "Collector Panel",
     nav: [
+      {title:"Profile", href: "/collector/profile", icon: UserCog},
       { title: "Dashboard", href: "/collector", icon: LayoutDashboard },
       { title: "Customers", href: "/collector/customers", icon: Users },
       { title: "Bills", href: "/collector/bills", icon: Receipt },
@@ -49,6 +51,7 @@ export const DASHBOARD_CONFIG: Record<DashboardRole, DashboardConfig> = {
   customer: {
     label: "Customer Panel",
     nav: [
+      {title:"Profile", href: "/customer/profile", icon: UserCog},
       { title: "Dashboard", href: "/customer", icon: LayoutDashboard },
       { title: "My Package", href: "/customer/package", icon: Package },
       { title: "Bills", href: "/customer/bills", icon: Receipt },

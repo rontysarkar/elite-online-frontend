@@ -90,3 +90,20 @@ export const CreateAreaSchema = z.object({
 });
 
 export type TCreateAreaPayload = z.infer<typeof CreateAreaSchema>;
+
+
+
+export const changePasswordSchema = z
+  .object({
+    current_password: z.string().min(1, "Current password is required"),
+    new_password: z
+      .string()
+      .min(1, "New password is required")
+      .min(8, "Password must be at least 8 characters"),
+  })
+  .refine((values) => values.current_password !== values.new_password, {
+    message: "New password must be different from the current password",
+    path: ["new_password"],
+  });
+
+export type ChangePasswordValues = z.infer<typeof changePasswordSchema>;

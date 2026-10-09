@@ -224,7 +224,7 @@ export function CreatePackageModal({
               className="h-11"
               disabled={isCreating}
             >
-              {isCreating ? "Creating..." : "Create collector"}
+              {isCreating ? "Creating..." : "Create Package"}
             </Button>
           </div>
         </form>

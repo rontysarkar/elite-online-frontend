@@ -1,5 +1,6 @@
 import { apiClient } from "@/lib/api-client"
-import { ConnectionRequestValues } from "@/validation"
+import { ChangePasswordValues, TConnectionRequestValues } from "@/validation"
+
 
 
 
@@ -15,7 +16,7 @@ export function getMe() {
     return apiClient("/auth/me",{method: "GET"})
 }
 
-export function sendConnectionRequest(payload:ConnectionRequestValues) {
+export function sendConnectionRequest(payload:TConnectionRequestValues) {
     return apiClient("/connection-request",{method: "POST", body: payload})
 }
 
@@ -34,6 +35,10 @@ export function forgotPassword(payload:{email:string}) {
 
 export function resetPassword(payload:{email:string,otp:string,new_password:string}) {
     return apiClient("/auth/reset-password",{method: "POST", body: payload})
+}
+
+export function changePassword(payload:ChangePasswordValues) {
+    return apiClient("/auth/change-password",{method: "PATCH", body: payload})
 }
 
 

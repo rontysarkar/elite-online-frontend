@@ -14,6 +14,7 @@ import {
 import { BillsSkeleton } from "./customer-bills-skeleton";
 import { SectionTitle } from "./section-title";
 import { toast } from "@/components/ui/toast";
+import { ErrorComponent } from "@/components/global/error-component";
 
 export function CustomerBills() {
   const { data, isPending, isFetching, isError, refetch } =
@@ -36,7 +37,7 @@ export function CustomerBills() {
         }
         setPayingBillId(null);
       },
-      onError: (err) => {
+      onError: () => {
         toast.add({
           title: "Couldn't pay bill",
           description: "Something went wrong. Please try again.",
@@ -52,19 +53,7 @@ export function CustomerBills() {
   }
 
   if (isError) {
-    return (
-      <div className="rounded-xl border border-border bg-card p-10 text-center text-card-foreground shadow-sm">
-        <p className="text-sm font-semibold text-foreground">
-          Couldn&apos;t load your bills
-        </p>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Something went wrong. Please try again.
-        </p>
-        <Button variant="outline" className="mt-4" onClick={() => refetch()}>
-          Try again
-        </Button>
-      </div>
-    );
+    return <ErrorComponent refetch={refetch} />;
   }
 
   const bills = (data ?? []) as CustomerBill[];
