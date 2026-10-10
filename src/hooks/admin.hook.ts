@@ -6,6 +6,7 @@ import {
   createCustomer,
   createPackage,
   deleteUser,
+  generateMonthlyBills,
   getAdminCustomers,
   getAdminReports,
   getCollectors,
@@ -92,7 +93,6 @@ export function useGetAdminCustomers(filters: CustomersQuery) {
       const res = await getAdminCustomers(filters);
       return { ...res.data, meta: res.meta };
     },
-
   });
 }
 
@@ -149,7 +149,6 @@ export function useCreateCustomer() {
   });
 }
 
-
 export function useCreatePackage() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -160,13 +159,22 @@ export function useCreatePackage() {
   });
 }
 
-
 export function useCreateArea() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (payload: TCreateAreaPayload) => createArea(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["areas"] });
+    },
+  });
+}
+
+export function useGenerateMonthlyBills() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => generateMonthlyBills(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["customers"] });
     },
   });
 }

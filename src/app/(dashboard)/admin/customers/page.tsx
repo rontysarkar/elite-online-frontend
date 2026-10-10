@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 
 import {
   CustomersManagement,
-  CustomersUrlParams,
 } from "@/components/dashboard/admin/customers/customers-management";
 
 import { CreateCustomerButton } from "@/components/dashboard/admin/customers/create-customer-button";
+import { CustomersUrlParams } from "@/types/customers-types";
 
 export const metadata: Metadata = {
   title: "Customers",

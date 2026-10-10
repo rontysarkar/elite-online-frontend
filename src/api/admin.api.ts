@@ -99,3 +99,9 @@ export function createArea(payload: TCreateAreaPayload) {
     body: JSON.stringify(payload),
   });
 }
+
+export function generateMonthlyBills(){
+  return apiClient(`/bills/generate`, {
+    method: "POST",
+  });
+}
