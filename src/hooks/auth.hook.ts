@@ -10,7 +10,8 @@ import {
   userLogout,
   verifyEmail,
 } from "@/api";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 export function useLogin() {
   return useMutation({
@@ -18,16 +19,32 @@ export function useLogin() {
   });
 }
 
+// export function useLogout() {
+//   return useMutation({
+//     mutationFn: userLogout,
+//   });
+// }
+
 export function useLogout() {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
   return useMutation({
     mutationFn: userLogout,
+
+    onSuccess: () => {
+      queryClient.clear();
+      router.replace("/login");
+
+      router.refresh();
+    },
   });
 }
 
 export function useGetMe() {
   return useQuery({
     queryKey: ["user"],
-    queryFn: async () =>{
+    queryFn: async () => {
       const res = await getMe();
       return res.data;
     },
@@ -63,8 +80,7 @@ export function useResetPassword() {
   return useMutation({
     mutationFn: resetPassword,
   });
-}   
-
+}
 
 export function useChangePassword() {
   return useMutation({
@@ -75,6 +91,6 @@ export function useChangePassword() {
 export function useRefreshToken() {
   return useMutation({
     mutationFn: refreshToken,
-    retry:0,
+    retry: 0,
   });
 }
