@@ -52,7 +52,7 @@ export const DASHBOARD_CONFIG: Record<DashboardRole, DashboardConfig> = {
     label: "Customer Panel",
     nav: [
       {title:"Profile", href: "/customer/profile", icon: UserCog},
-      { title: "Dashboard", href: "/customer", icon: LayoutDashboard },
+      // { title: "Dashboard", href: "/customer", icon: LayoutDashboard },
       // { title: "My Package", href: "/customer/package", icon: Package },
       { title: "Bills", href: "/customer/bills", icon: Receipt },
       // { title: "Payments", href: "/customer/payments", icon: CreditCard },

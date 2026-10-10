@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ConnectionRequestSchema, ConnectionRequestValues } from "@/validation";
+import { ConnectionRequestSchema, TConnectionRequestValues } from "@/validation";
 import { getErrorMessage, normalizePhone } from "@/helper";
 import { IApiResponse, IArea, IInternetPackage } from "@/types";
 import { useGetAreas, useGetPackages, useSendConnectionRequest } from "@/hooks";
@@ -35,13 +35,13 @@ export function ConnectionRequestForm() {
 
   const form = useForm({
     defaultValues: {
-      name: "Ronty Sarkar",
-      email: "bonov72127@deertees.com",
-      phone: "0140-1234567",
-      address: "Uttara, Dhaka,Bangladesh",
+      name: "",
+      email: "",
+      phone: "",
+      address: "",
       areaId: "",
       packageId: "",
-    } as ConnectionRequestValues,
+    } as TConnectionRequestValues,
     validators: {
       onChange: ConnectionRequestSchema,
     },
@@ -76,10 +76,11 @@ export function ConnectionRequestForm() {
           const params = new URLSearchParams({ email: value.email });
           router.push(`/request-connection/verify-email?${params.toString()}`);
         },
-        onError: () => {
+        onError: (res) => {
+          console.log(res)
           toast.add({
             title: "Connection request failed",
-            description: "Customer Already Exist",
+            description: "this Email Or Phone Number Already Exist",
             type: "error",
           });
         },

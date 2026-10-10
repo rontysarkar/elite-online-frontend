@@ -4,7 +4,6 @@ import { FilterItem } from "@/types/customers-types";
 export const ALL = "all";
 export const LIMIT = 10;
 
-
 export const ROLE_LABELS: Record<UserRole, string> = {
   ADMIN: "Admin",
   COLLECTOR: "Collector",
@@ -40,8 +39,6 @@ export const monthItems = [
   ...MONTHS.map((name, i) => ({ value: String(i + 1), label: name })),
 ];
 
-
-
 export const MONTH_NAMES = [
   "January",
   "February",
@@ -64,13 +61,11 @@ export const ROLE_ITEMS = [
   { value: "CUSTOMER", label: "Customer" },
 ];
 
-
 export const CUSTOMER_STATUS_ITEMS: FilterItem[] = [
   { value: ALL, label: "All status" },
   { value: "ACTIVE", label: "Active" },
   { value: "INACTIVE", label: "Inactive" },
 ];
-
 
 export const BILL_STATUS_ITEMS: FilterItem[] = [
   { value: ALL, label: "All status" },
@@ -78,3 +73,9 @@ export const BILL_STATUS_ITEMS: FilterItem[] = [
   { value: "UNPAID", label: "Unpaid" },
   { value: "OVERDUE", label: "Overdue" },
 ];
+
+export const dashboardRoute: Record<UserRole, string> = {
+  ADMIN: "/admin/",
+  COLLECTOR: "/collector",
+  CUSTOMER: "/customer/profile",
+};

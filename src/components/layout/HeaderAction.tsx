@@ -7,6 +7,7 @@ import { toast } from "../ui/toast";
 import { Button } from "../ui/button";
 import { LogOut, User } from "lucide-react";
 import { UserRole } from "@/types";
+import { dashboardRoute } from "@/constant";
 
 export default function HeaderActions() { 
   const { data, isLoading } = useGetMe();
@@ -14,11 +15,7 @@ export default function HeaderActions() {
   const queryClient = useQueryClient();
 
 
-  const dashboardRoute:Record<UserRole, string> = {
-    ADMIN: "/admin/",
-    COLLECTOR: "/collector",
-    CUSTOMER: "/customer/profile",
-  }
+  
   const currentRole:UserRole = !!data && data.role;
 
   const handleLogout = () => {
