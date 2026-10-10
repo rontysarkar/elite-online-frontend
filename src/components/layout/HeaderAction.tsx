@@ -36,6 +36,7 @@ export default function HeaderActions() {
   if (isLoading) {
     return <div className="h-9 w-24 animate-pulse rounded-md bg-muted" />;
   }
+  console.log(data);
 
   return (
     <div className="flex items-center gap-2">

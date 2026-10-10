@@ -6,8 +6,10 @@ import { LogOut, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { DASHBOARD_CONFIG, type DashboardRole } from "@/config/dashboard-nav";
-import { useGetMe } from "@/hooks";
+import { useGetMe, useLogout } from "@/hooks";
 import { Logo } from "@/components/global/logo";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "@/components/ui/toast";
 
 interface DashboardShellProps {
   children: React.ReactNode;
@@ -19,17 +21,31 @@ export function DashboardShell({ children, userRole }: DashboardShellProps) {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const { label, nav } = DASHBOARD_CONFIG[userRole];
 
-  
   // function isActive(href: string) {
   //   return href === `/${userRole}`
   //     ? pathname === href
   //     : pathname === href || pathname.startsWith(`${href}/`);
   // }
   function isActive(href: string) {
-    return pathname === href
+    return pathname === href;
   }
 
-  const {data} = useGetMe();
+  const { data } = useGetMe();
+  const { mutate: logout } = useLogout();
+  const queryClient = useQueryClient();
+
+  const handleLogout = () => {
+    logout(undefined, {
+      onSuccess: () => {
+        queryClient.removeQueries({ queryKey: ["user"] });
+        toast.add({
+          title: "Logout successful",
+          description: "You have successfully logged out.",
+          type: "success",
+        });
+      },
+    });
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -41,7 +57,6 @@ export function DashboardShell({ children, userRole }: DashboardShellProps) {
         />
       )}
 
-    
       <aside
         className={cn(
           "fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-border bg-card text-card-foreground transition-transform duration-300 ease-out lg:translate-x-0",
@@ -85,6 +100,7 @@ export function DashboardShell({ children, userRole }: DashboardShellProps) {
 
         <div className="border-t border-border p-3">
           <button
+            onClick={handleLogout}
             type="button"
             className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           >
@@ -93,7 +109,6 @@ export function DashboardShell({ children, userRole }: DashboardShellProps) {
           </button>
         </div>
       </aside>
-
 
       <div className="lg:pl-64">
         <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-background/95 px-4 backdrop-blur sm:px-6">
@@ -112,7 +127,6 @@ export function DashboardShell({ children, userRole }: DashboardShellProps) {
             </span>
           </div>
 
-          
           <div className="flex items-center gap-3">
             <div className="hidden text-right sm:block">
               <p className="text-sm font-semibold leading-none text-foreground">
