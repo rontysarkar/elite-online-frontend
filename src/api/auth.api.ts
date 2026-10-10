@@ -42,4 +42,6 @@ export function changePassword(payload:ChangePasswordValues) {
 }
 
 
-
+export function refreshToken(){
+    return apiClient("/auth/refresh-token",{method: "POST"})
+}

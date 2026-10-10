@@ -1,39 +1,32 @@
 "use client";
-
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LogOut, Menu, X } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
-
 import { cn } from "@/lib/utils";
 import { DASHBOARD_CONFIG, type DashboardRole } from "@/config/dashboard-nav";
-
 import { useGetMe } from "@/hooks";
 import { Logo } from "@/components/global/logo";
 
 interface DashboardShellProps {
   children: React.ReactNode;
+  userRole: DashboardRole;
 }
 
-function getRoleFromPathname(pathname: string): DashboardRole {
-  const segment = pathname.split("/")[1];
-  if (segment === "admin" || segment === "collector") return segment;
-  return "customer";
-}
-
-export function DashboardShell({ children }: DashboardShellProps) {
+export function DashboardShell({ children, userRole }: DashboardShellProps) {
   const pathname = usePathname();
-  const role = getRoleFromPathname(pathname);
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
-  const { label, nav } = DASHBOARD_CONFIG[role];
+  const { label, nav } = DASHBOARD_CONFIG[userRole];
 
   
+  // function isActive(href: string) {
+  //   return href === `/${userRole}`
+  //     ? pathname === href
+  //     : pathname === href || pathname.startsWith(`${href}/`);
+  // }
   function isActive(href: string) {
-    return href === `/${role}`
-      ? pathname === href
-      : pathname === href || pathname.startsWith(`${href}/`);
+    return pathname === href
   }
 
   const {data} = useGetMe();
@@ -123,14 +116,14 @@ export function DashboardShell({ children }: DashboardShellProps) {
           <div className="flex items-center gap-3">
             <div className="hidden text-right sm:block">
               <p className="text-sm font-semibold leading-none text-foreground">
-                {data?.data?.name}
+                {data?.name}
               </p>
               <p className="mt-1 text-xs capitalize text-muted-foreground">
-                {data?.data?.role}
+                {data?.role}
               </p>
             </div>
             <span className="flex size-9 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
-              {data?.data?.role.charAt(0).toUpperCase()}
+              {data?.role.charAt(0).toUpperCase()}
             </span>
           </div>
         </header>

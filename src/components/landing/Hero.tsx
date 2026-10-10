@@ -1,18 +1,19 @@
 import Link from "next/link";
 import {
   ArrowRight,
-  Gauge,
   MessageCircle,
   Users,
-  Wifi,
   Zap,
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { NetworkVisual } from "./network-visual";
+import { useGetMe } from "@/hooks";
 
 export function Hero() {
+
+  // const { data, isLoading } = useGetMe();
   return (
     <section id="home" className="relative overflow-hidden">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_75%_50%,rgba(41,171,226,0.14),transparent_35%)]" />
@@ -66,7 +67,6 @@ export function Hero() {
         </div>
 
 
-        {/* <NetworkVisual /> */}
         <NetworkVisual />
       </div>
     </section>

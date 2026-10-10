@@ -2,6 +2,7 @@ import {
   changePassword,
   forgotPassword,
   getMe,
+  refreshToken,
   resendEmailVerify,
   resetPassword,
   sendConnectionRequest,
@@ -68,5 +69,12 @@ export function useResetPassword() {
 export function useChangePassword() {
   return useMutation({
     mutationFn: changePassword,
+  });
+}
+
+export function useRefreshToken() {
+  return useMutation({
+    mutationFn: refreshToken,
+    retry:0,
   });
 }

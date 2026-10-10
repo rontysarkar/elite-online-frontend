@@ -6,11 +6,20 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "../ui/toast";
 import { Button } from "../ui/button";
 import { LogOut, User } from "lucide-react";
+import { UserRole } from "@/types";
 
 export default function HeaderActions() { 
   const { data, isLoading } = useGetMe();
   const { mutate: logout } = useLogout();
   const queryClient = useQueryClient();
+
+
+  const dashboardRoute:Record<UserRole, string> = {
+    ADMIN: "/admin/",
+    COLLECTOR: "/collector",
+    CUSTOMER: "/customer/profile",
+  }
+  const currentRole:UserRole = !!data && data.role;
 
   const handleLogout = () => {
     logout(undefined, {
@@ -47,7 +56,7 @@ export default function HeaderActions() {
       ) : (
 
         <>
-          <Button nativeButton={false} render={<Link href="/admin" />} variant="ghost" className="gap-2">
+          <Button nativeButton={false} render={<Link href={dashboardRoute[currentRole]} />} variant="outline">
             <User className="h-4 w-4" />
             Dashboard
           </Button>

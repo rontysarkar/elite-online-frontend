@@ -46,7 +46,6 @@ export function CollectorsManagement() {
   const { data, isPending, isFetching, isError, refetch } = useGetCollectors();
 
   const collectors = (data ?? []) as ICollector[];
-  console.log(collectors);
 
   if (isPending) {
     return (

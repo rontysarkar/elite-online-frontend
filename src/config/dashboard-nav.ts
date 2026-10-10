@@ -11,7 +11,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-export type DashboardRole = "admin" | "collector" | "customer";
+export type DashboardRole = "ADMIN" | "COLLECTOR" | "CUSTOMER";
 
 export interface NavItem {
   title: string;
@@ -26,7 +26,7 @@ interface DashboardConfig {
 
 
 export const DASHBOARD_CONFIG: Record<DashboardRole, DashboardConfig> = {
-  admin: {
+  ADMIN: {
     label: "Admin Panel",
     nav: [
       {title:"Profile", href: "/admin/profile", icon: UserCog},
@@ -39,7 +39,7 @@ export const DASHBOARD_CONFIG: Record<DashboardRole, DashboardConfig> = {
       { title: "Areas", href: "/admin/areas", icon: MapPin },
     ],
   },
-  collector: {
+  COLLECTOR: {
     label: "Collector Panel",
     nav: [
       {title:"Profile", href: "/collector/profile", icon: UserCog},
@@ -48,14 +48,14 @@ export const DASHBOARD_CONFIG: Record<DashboardRole, DashboardConfig> = {
       { title: "Bills", href: "/collector/bills", icon: Receipt },
     ],
   },
-  customer: {
+  CUSTOMER: {
     label: "Customer Panel",
     nav: [
       {title:"Profile", href: "/customer/profile", icon: UserCog},
       { title: "Dashboard", href: "/customer", icon: LayoutDashboard },
-      { title: "My Package", href: "/customer/package", icon: Package },
+      // { title: "My Package", href: "/customer/package", icon: Package },
       { title: "Bills", href: "/customer/bills", icon: Receipt },
-      { title: "Payments", href: "/customer/payments", icon: CreditCard },
+      // { title: "Payments", href: "/customer/payments", icon: CreditCard },
     ],
   },
 };
