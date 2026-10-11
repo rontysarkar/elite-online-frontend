@@ -1,25 +1,17 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  MessageCircle,
-  Users,
-  Zap,
-} from "lucide-react";
+import { ArrowRight, MessageCircle, Users, Zap } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { NetworkVisual } from "./network-visual";
-import { useGetMe } from "@/hooks";
+import HeroSectionButton from "./herro-section-button";
 
 export function Hero() {
-
-  // const { data, isLoading } = useGetMe();
   return (
     <section id="home" className="relative overflow-hidden">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_75%_50%,rgba(41,171,226,0.14),transparent_35%)]" />
 
       <div className="mx-auto grid min-h-[calc(100vh-64px)] max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-20">
-  
         <div className="text-center lg:text-left">
           <Badge
             variant="secondary"
@@ -40,18 +32,7 @@ export function Hero() {
             throttling, no hidden fees.
           </p>
 
-          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row lg:justify-start">
-            <Button nativeButton={false} render={<Link href="#packages" />}>
-              View Packages
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-
-            <Button nativeButton={false} render={<Link href="/request-connection" />}>
-              Request Connection
-              
-            </Button>
-          </div>
-
+          <HeroSectionButton />
 
           <div className="mx-auto mt-10 grid max-w-lg grid-cols-3 border-t pt-8 lg:mx-0">
             <HeroStat
@@ -66,8 +47,9 @@ export function Hero() {
           </div>
         </div>
 
-
-        <NetworkVisual />
+        <div className="hidden lg:block">
+          <NetworkVisual />
+        </div>
       </div>
     </section>
   );
@@ -96,6 +78,3 @@ function HeroStat({
     </div>
   );
 }
-
-
-

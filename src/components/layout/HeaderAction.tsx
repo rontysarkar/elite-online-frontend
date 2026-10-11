@@ -1,6 +1,6 @@
-"use client"; 
+"use client";
 
-import Link from "next/link"; 
+import Link from "next/link";
 import { useGetMe, useLogout } from "@/hooks";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "../ui/toast";
@@ -9,19 +9,16 @@ import { LogOut, User } from "lucide-react";
 import { UserRole } from "@/types";
 import { dashboardRoute } from "@/constant";
 
-export default function HeaderActions() { 
+export default function HeaderActions() {
   const { data, isLoading } = useGetMe();
   const { mutate: logout } = useLogout();
   const queryClient = useQueryClient();
 
-
-  
-  const currentRole:UserRole = !!data && data.role;
+  const currentRole: UserRole = !!data && data.role;
 
   const handleLogout = () => {
     logout(undefined, {
       onSuccess: () => {
-        // Query client global user caching state flush operation clear
         queryClient.removeQueries({ queryKey: ["user"] });
         toast.add({
           title: "Logout successful",
@@ -32,33 +29,50 @@ export default function HeaderActions() {
     });
   };
 
-  
   if (isLoading) {
-    return <div className="h-9 w-24 animate-pulse rounded-md bg-muted" />;
+    return (
+      <div className=" flex  gap-3">
+        <div className="h-8 w-24 animate-pulse rounded-md bg-muted" />
+        <div className="h-8 w-28 animate-pulse rounded-md bg-muted" />
+      </div>
+    );
   }
 
   return (
     <div className="flex items-center gap-2">
-      
       {!data ? (
         <>
-          <Button nativeButton={false} render={<Link href="/login" />} variant="outline">
+          <Button
+            nativeButton={false}
+            render={<Link href="/login" />}
+            variant="outline"
+          >
             User Login
           </Button>
 
-          <Button nativeButton={false} render={<Link href="/request-connection" />}>
+          <Button
+            nativeButton={false}
+            render={<Link href="/request-connection" />}
+          >
             Get Connection
           </Button>
         </>
       ) : (
-
         <>
-          <Button nativeButton={false} render={<Link href={dashboardRoute[currentRole]} />} variant="outline">
+          <Button
+            nativeButton={false}
+            render={<Link href={dashboardRoute[currentRole]} />}
+            variant="outline"
+          >
             <User className="h-4 w-4" />
             Dashboard
           </Button>
-          
-          <Button variant="destructive" onClick={handleLogout} className="flex items-center gap-2">
+
+          <Button
+            variant="destructive"
+            onClick={handleLogout}
+            className="flex items-center gap-2"
+          >
             <LogOut className="h-4 w-4" />
             Logout
           </Button>
